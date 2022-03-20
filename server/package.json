@@ -1,0 +1,23 @@
+{
+  "name": "chatapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "App.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon Index.js"
+  },
+  "keywords": [
+    "chat",
+    "node",
+    "websocket"
+  ],
+  "author": "andre",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.2",
+    "express": "^4.17.3",
+    "mongoose": "^6.2.7",
+    "socket.io": "^4.4.1"
+  }
+}
