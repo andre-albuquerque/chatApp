@@ -13,7 +13,7 @@ export default function Home(){
         username: '',
         password: '',
         passwordCheck: ''
-      }) 
+    });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -21,26 +21,33 @@ export default function Home(){
           ...values,
           [name]: value
         })
-      };
-
+    };
 
     const [hasError, setError] = useState(false);
     const [loginErrors, setLoginErrors] = useState({});
 
     const handleLogin = async () => {
+
+        //setEmail(values.email)
+        //setPassword(values.password)
+
+        const isEmpty = Object.keys(loginValidate(values)).length === 0
+
+        if (!isEmpty){
+            setLoginErrors(loginValidate(values));     
+            return;         
+        }  
+
         try {
-            setLoginErrors(loginValidate(values)); 
-
-            setEmail(values.email)
-            setPassword(values.password)
-
+                        
             await Axios.get('http://localhost:8081/login',{
                 email: values.email,
                 password: values.password
-            })
+            }).then(response => console.log(response))
             
         } catch (error) {
             setError(true)
+            console.log(error)
         }
     };
 

@@ -21,22 +21,43 @@ export default function SignUp() {
   };
 
   const [hasError, setError] = useState(false);
-  const [formErrors, setFormErrors] = useState({});
+  const [formErrors, setFormErrors] = useState('');
 
-  const handleSubmit = async (e) =>{
-    try {
-      e.preventDefault(); 
-      setFormErrors(Validate(values))   
+  const [items, setItems] = useState('');
 
-      await Axios.post('http://localhost:8081/register',{
-        email: values.name,
-        username: values.username,
-        password: values.password
-      })
-      
-    } catch (error) {
-      setError(true)
-    }     
+  const [success, setSuccess] = useState(false);
+  const [sucessMsg, handleSuccess] = useState('')
+
+  const handleSubmit = async (e) =>{     
+    e.preventDefault(); 
+ 
+    const isEmpty = Object.keys(Validate(values)).length === 0
+
+    if (!isEmpty){
+       setFormErrors(Validate(values));     
+       return;         
+    }    
+
+    try {              
+      await Axios.post('http://localhost:8081/users/signup', {
+          email: values.email,
+          username: values.username,
+          password: values.password,
+          passwordCheck: values.passwordCheck
+        }
+      ).then(response => {
+        handleSuccess(response.data.message);
+        setSuccess(true);
+      })        
+    }
+    catch (error) {       
+        if (error.response) {
+          let errorMsg = error.response.data;
+          setError(true)
+          setItems(errorMsg.message)
+          setFormErrors(errorMsg)          
+        }
+      };
   };
 
   return (
@@ -47,7 +68,7 @@ export default function SignUp() {
         <p>{ formErrors.email }</p>
         <h3>Username</h3>
         <input type="text" name='username' value={values.username} onChange={handleChange} />
-        <p>{ formErrors.username }</p>
+        <p>{ formErrors.username}</p>
         <h3>Senha</h3>
         <input type="password" name='passwordCheck' value={values.passwordCheck} onChange={handleChange}/>
         <p>{ formErrors.password }</p>
@@ -57,7 +78,8 @@ export default function SignUp() {
         <p>
           <button type="submit" onClick={handleSubmit}>Registrar</button>
         </p>
-        {hasError && <div>Ocorreu um erro ao salvar a conta. Tente novamente.</div>}<br/> 
+        {(hasError || success) && <div>{items}{sucessMsg}</div>}<br/> 
+
         <Link to="/">Já possui uma conta?</Link>
     </form>
   );

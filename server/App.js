@@ -1,22 +1,25 @@
+const dotenv = require('dotenv');
+dotenv.config({ path: ".env" });
+
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const socket = require('socket.io');
-const mongoose = require('mongoose');
 const users = require('./routes/Users');
+const connectDatabase = require('./config/Database');
+const cors = require('cors');
+
+app.use(express.json());
+
+app.use(cors());
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static('public'));
 
-//mongoose
-mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://127.0.0.1/blobApp').then(()=>{
-    console.log('Conectado ao MongoDB')
-}).catch((err)=>{
-    console.log('Erro ao conectar '+err)
-})
+connectDatabase();
 
-app.use('/users', users)
+app.use('/users', users);
+
 
 const Port = 8081;
 app.listen(Port, ()=>{

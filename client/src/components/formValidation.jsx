@@ -21,7 +21,7 @@ function Validate(props){
     }else if (props.password.length > 15){
         errors.password = 'Senha não pode ter mais que 15 caracteres!'
     }else if (props.password !== props.passwordCheck){
-        errors.password = 'As senhas não são iguais!'
+        errors.password = 'As senhas são diferentes, tente novamente!'
     }
 
     return errors;
