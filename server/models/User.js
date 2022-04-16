@@ -15,9 +15,9 @@ const User = new Schema({
         required: true
     },
     isAdmin: {
-        type: Number,
-        default: 0
+        type: Boolean,
+        default: false
     }
-});
+}, { minimize: false });
 
 mongoose.model('user', User);

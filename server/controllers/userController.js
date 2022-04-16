@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 require('../models/User');
 const User = mongoose.model('user');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const formValidation = require('./formValidation')
 
 
@@ -9,6 +10,8 @@ module.exports = {
     async signup (req,res,next){
         
         validation = new formValidation(req.body.email, req.body.username, req.body.password, req.body.passwordCheck);        
+
+        console.log(validation)
         
         obj = validation.validation()
 
@@ -51,7 +54,50 @@ module.exports = {
                 })
             }    
         } catch (error) {
-            res.sendStatus(500).json({message: 'Houve um erro interno.'})
+            res.status(500).json({message: 'Houve um erro interno.'})
         } 
+    },
+    
+
+    async login (req, res, next) {
+        try {
+            const user = await User.findOne({email: req.body.email})
+            if (!user) {                    
+                return res.status(401).json({message: 'Falha na autenticação 1'})
+            }
+            console.log(user.username)
+            bcrypt.compare(req.body.password, user.password, (err, success)=>{
+                if (err) {
+                    return res.status(401).json({message: 'Falha na autenticação 2'})
+                }
+                if (success) {
+                    const token = jwt.sign({
+                        id_user: user._id,
+                        email: user.email
+                    }, process.env.JWT_KEY, 
+                    {expiresIn: 60*15}
+                    ); 
+         
+                    res.cookie('token', token, {
+                        expires:new Date(Date.now() + 900000),
+                        sameSite: 'none', secure: true, httpOnly: false
+                    });
+
+                   
+                    return res.status(201).json({msg: 'Autenticado com sucesso!', 
+                                                username: user.username,
+                                                admin: user.isAdmin,
+                                                message: user.message})
+                }
+                return res.status(401).json({message: 'Falha na autenticação 3'})                       
+            })               
+
+        } catch (error) {
+            return res.status(500).json({error: error})
+        }
+    },
+
+    logout (req,res) {
+        res.end()
     }
 };

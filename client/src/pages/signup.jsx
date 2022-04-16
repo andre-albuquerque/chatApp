@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Axios from 'axios';
 import Validate from '../components/formValidation';
+import { Paper, Box, Container } from '@mui/material'
 
 export default function SignUp() {
 
@@ -61,26 +62,30 @@ export default function SignUp() {
   };
 
   return (
-    <form>
-        <h1>Crie uma conta</h1>
-        <h3>Email</h3>
-        <input type="email" name='email' value={values.email} onChange={handleChange} />
-        <p>{ formErrors.email }</p>
-        <h3>Username</h3>
-        <input type="text" name='username' value={values.username} onChange={handleChange} />
-        <p>{ formErrors.username}</p>
-        <h3>Senha</h3>
-        <input type="password" name='passwordCheck' value={values.passwordCheck} onChange={handleChange}/>
-        <p>{ formErrors.password }</p>
-        <h3>Digite a senha novamente</h3>
-        <input type="password" name='password' value={values.password} onChange={handleChange} />
-        <p>{ formErrors.password }</p>
-        <p>
-          <button type="submit" onClick={handleSubmit}>Registrar</button>
-        </p>
-        {(hasError || success) && <div>{items}{sucessMsg}</div>}<br/> 
+    <Paper square style={{ padding: 50, width: "20%"}} variant="elevation" sx={{minWidth: 300, my:10, mx:85}} >
+      <Container component="main" maxWidth="xs" style={{justifyContent: "center"}}>
+        <form>
+            <h1>Crie uma conta</h1>
+            <h3>Email</h3>
+            <input type="email" name='email' value={values.email} onChange={handleChange} />
+            <p>{ formErrors.email }</p>
+            <h3>Username</h3>
+            <input type="text" name='username' value={values.username} onChange={handleChange} />
+            <p>{ formErrors.username}</p>
+            <h3>Senha</h3>
+            <input type="password" name='passwordCheck' value={values.passwordCheck} onChange={handleChange}/>
+            <p>{ formErrors.password }</p>
+            <h3>Digite a senha novamente</h3>
+            <input type="password" name='password' value={values.password} onChange={handleChange} />
+            <p>{ formErrors.password }</p>
+            <p>
+              <button type="submit" onClick={handleSubmit}>Registrar</button>
+            </p>
+            {(hasError || success) && <div>{items}{sucessMsg}</div>}<br/> 
 
-        <Link to="/">Já possui uma conta?</Link>
-    </form>
+            <Link to="/">Já possui uma conta?</Link>
+        </form>
+      </Container>
+    </Paper>
   );
 }
