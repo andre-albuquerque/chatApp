@@ -26,7 +26,7 @@ module.exports = class formValidation {
     }
     if(this.password.length > 15){
         errors.password = 'Senha não pode ter mais que 15 caracteres!';
-      }
+    }
     if(this.password != this.passwordCheck){
         errors.password = 'As senhas são diferentes, tente novamente!';
     }

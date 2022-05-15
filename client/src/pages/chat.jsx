@@ -1,16 +1,23 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { AuthContext } from '../providers/auth';
 import io from 'socket.io-client';
 import { useNavigate } from "react-router-dom";
 import Api from '../api/api';
+import Header from '../components/header/header'
+import Sidebar from '../components/sidebar/sidebar'
+import Paper from '@mui/material/Paper';
+import { MessageLeft, MessageRight } from '../components/message/message';
+
+import Messages from "../components/message/Messages"
+
+import './chat/Chat.css'
 
 import Moment from 'react-moment';
 import 'moment-timezone';
 
 
 export default function Chat(){
-
-    const { handleLogout } = useContext(AuthContext);
 
     let name = localStorage.getItem("username")
 
@@ -19,11 +26,6 @@ export default function Chat(){
     const socketRef = useRef();
 
     let navigate = useNavigate();
-
-    const handleBack = () =>{
-        localStorage.removeItem("room")
-        navigate("/rooms")
-    }
 
     const [ state, setState ] = useState({ message: ""})
     const [ chat, setChat ] = useState([])
@@ -91,42 +93,30 @@ export default function Chat(){
 
     const renderChat = () => {
         
-		return messages.map(({ message, name, time }, index) => (
-			<div key={index}>
-				<h4>
-                    <span>{name}: {message} </span> <br/>
-                    <span><Moment format="hh:mm">{(time).toLocaleString('pt-BR', { timeZone: 'America/Recife' })}</Moment></span>
-				</h4>
-			</div>                
-		))
-	}
+		return <div >
+                    <Paper Depth={2}>
+                        <Paper >
+                            {messages.map(({ message, name, time }, index) => (
+                            <MessageLeft
+                            message = {message}
+                            timestamp = {<Moment format="hh:mm">{(time).toLocaleString('pt-BR', { timeZone: 'America/Recife' })}</Moment>}
+                            />
+                            ))}
+                        </Paper>
+                    </Paper>
+                </div>
+    };
 
     return(
-        <div>
-            <button onClick={handleLogout}>Logout</button>
-            <br/>
-            <br/>
-            <button onClick={handleBack}>Lista de grupos</button>
-
-            <h1>{room}</h1>
-            <div>
-				<h3>Chat:</h3>
-				{renderChat()}
-			</div>
-            <form onSubmit={onMessageSubmit}>
-                <div>
-                    <textarea 
-                        name='message'
-                        onChange={(e)=>onTextChange(e)}
-                        value={setState.message}
-                    />
+        <div className="app">    
+            <div className="app_body">
+                <Header className="header">Header</Header>
+                <div className="container">
+                    <Sidebar />
+                    <Messages />
+                    {error && <div>Erro ao salvar as mensagens.</div>}
                 </div>
-                <br/>           
-                <button>Enviar</button>
-            </form>          
-            <br/>        
-            <br/>
-            {error && <div>Erro ao salvar as mensagens.</div>}
+            </div>    
         </div>
     )
-}
+} 

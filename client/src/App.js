@@ -8,7 +8,6 @@ import Admin from './pages/admin';
 import Signup from './pages/signup';
 import Chat from './pages/chat';
 import NotFoundPage from './pages/notFound';
-import Rooms from './pages/rooms'
 
 
 import { AuthContext, AuthProvider } from './providers/auth';
@@ -36,14 +35,7 @@ export default function App(){
                 <Admin/>
               </PrivateRoute>
              }
-            />
-            <Route path="/rooms"
-             element={
-              <PrivateRoute>
-                <Rooms/>
-              </PrivateRoute>
-             }
-            />            
+            />         
             <Route path="/chat"
              element={
               <PrivateRoute>

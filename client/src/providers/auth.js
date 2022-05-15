@@ -6,7 +6,6 @@ import Api from '../api/api'
 
 import loginValidate from '../components/loginValidation';
 
-
 export const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
@@ -51,28 +50,32 @@ export const AuthProvider = ({children}) => {
         
     }, [cookies]);
    
-    const handleLogin = async () => {        
+    const handleLogin = async (e) => {    
+
+        e.preventDefault();     
 
         const isEmpty = Object.keys(loginValidate(values)).length === 0
 
         if (!isEmpty){
-            setLoginErrors(loginValidate(values));     
+            setLoginErrors(loginValidate(values)); 
+            setError(true)    
             return;         
         }  
 
         try {               
             
-            const login = await Api.post('/users/login',{
+            const login = await Api.post('/users/login', {
                 email: values.email,
                 password: values.password,               
             },{ withCredentials: true })
+
             
             if (login) {
                 setUser(login.data)
                 localStorage.setItem('username', `${login.data.username}`)
                 setAuthenticated(true);            
                 Api.defaults.headers.Authorization = `Bearer ${cookies}`;
-                navigate("/rooms")           
+                navigate("/chat")           
             }
 
             setLoading(false);
@@ -88,11 +91,18 @@ export const AuthProvider = ({children}) => {
         localStorage.removeItem("username")
         localStorage.removeItem("room")
         Api.defaults.headers.Authorization = undefined;
+        setValues({
+            email: '',
+            password: ''
+          })
+
+        setError(false)
+
         navigate("/")        
     }
 
     return (
-        <AuthContext.Provider value={ { user, authenticated, handleLogin, handleLogout, loginErrors, hasError, values,handleChange }}>
+        <AuthContext.Provider value={ { user, authenticated, handleLogin, handleLogout, loginErrors, hasError, values, handleChange }}>
             {children}    
         </AuthContext.Provider>
     );

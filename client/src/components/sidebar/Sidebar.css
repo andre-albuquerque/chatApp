@@ -1,0 +1,13 @@
+.sidebar {
+    flex: 0.3;
+    height: 89vh;
+    background-color: white;
+}
+
+.sidebar_groupItem {
+    cursor: pointer;
+}
+
+.sidebar_groupItem:hover {
+    background-color: #ebebeb;
+}

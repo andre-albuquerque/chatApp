@@ -9,9 +9,7 @@ const formValidation = require('./formValidation')
 module.exports = {
     async signup (req,res,next){
         
-        validation = new formValidation(req.body.email, req.body.username, req.body.password, req.body.passwordCheck);        
-
-        console.log(validation)
+        validation = new formValidation(req.body.email, req.body.username, req.body.password, req.body.passwordCheck);     
         
         obj = validation.validation()
 

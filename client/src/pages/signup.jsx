@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Axios from 'axios';
 import Validate from '../components/formValidation';
-import { Paper, Box, Container } from '@mui/material'
+import { Box, Container, Typography, TextField, Button, Alert  } from '@mui/material'
 
 export default function SignUp() {
 
@@ -22,6 +22,9 @@ export default function SignUp() {
   };
 
   const [hasError, setError] = useState(false);
+
+  const [submitError, setSubmitError] = useState(false);
+
   const [formErrors, setFormErrors] = useState('');
 
   const [items, setItems] = useState('');
@@ -35,8 +38,9 @@ export default function SignUp() {
     const isEmpty = Object.keys(Validate(values)).length === 0
 
     if (!isEmpty){
-       setFormErrors(Validate(values));     
-       return;         
+      setFormErrors(Validate(values)); 
+      setError(true)    
+      return;         
     }    
 
     try {              
@@ -54,7 +58,7 @@ export default function SignUp() {
     catch (error) {       
         if (error.response) {
           let errorMsg = error.response.data;
-          setError(true)
+          setSubmitError(true)
           setItems(errorMsg.message)
           setFormErrors(errorMsg)          
         }
@@ -62,30 +66,45 @@ export default function SignUp() {
   };
 
   return (
-    <Paper square style={{ padding: 50, width: "20%"}} variant="elevation" sx={{minWidth: 300, my:10, mx:85}} >
-      <Container component="main" maxWidth="xs" style={{justifyContent: "center"}}>
+  
+    <Container component="main" maxWidth="xs">
+      <Box component="form" onSubmit={handleSubmit} noValidate
+        sx={{
+          mt: 8,
+          mb: 3,
+          position: 'relative',
+          marging: '10px auto',
+          display: 'block',
+          flexDirection: 'column',
+          alignItems: 'center',
+          textAlign: 'center'
+        }}
+      >
+        <Typography component="h1" variant="h5">
+          Crie uma conta
+        </Typography>
+          
         <form>
-            <h1>Crie uma conta</h1>
-            <h3>Email</h3>
-            <input type="email" name='email' value={values.email} onChange={handleChange} />
-            <p>{ formErrors.email }</p>
-            <h3>Username</h3>
-            <input type="text" name='username' value={values.username} onChange={handleChange} />
-            <p>{ formErrors.username}</p>
-            <h3>Senha</h3>
-            <input type="password" name='passwordCheck' value={values.passwordCheck} onChange={handleChange}/>
-            <p>{ formErrors.password }</p>
-            <h3>Digite a senha novamente</h3>
-            <input type="password" name='password' value={values.password} onChange={handleChange} />
-            <p>{ formErrors.password }</p>
-            <p>
-              <button type="submit" onClick={handleSubmit}>Registrar</button>
-            </p>
-            {(hasError || success) && <div>{items}{sucessMsg}</div>}<br/> 
+          <TextField label="Email" fullWidth  margin="normal" type="email" name='email' value={values.email} onChange={handleChange}/>
+          {(hasError && formErrors.email) && <div><Alert severity="warning">{ formErrors.email }</Alert></div>}
 
-            <Link to="/">Já possui uma conta?</Link>
+          <TextField  label="Nome de usuário" fullWidth margin="normal" type="text" name='username' value={values.username} onChange={handleChange} />
+          {(hasError && formErrors.username) && <div><Alert fullWidth severity="warning">{ formErrors.username}</Alert></div>}
+
+          <TextField label="Senha" fullWidth margin="normal" type="password" name='password' value={values.password} onChange={handleChange}/>
+          {(hasError && formErrors.password) && <div><Alert fullWidth severity="warning">{ formErrors.password }</Alert></div>}
+
+          <TextField label="Digite a senha novamente" fullWidth margin="normal" type="password" name='passwordCheck' value={values.passwordCheck} onChange={handleChange} />
+          {(hasError && formErrors.password) && <div><Alert fullWidth severity="warning">{ formErrors.password }</Alert></div>}
         </form>
-      </Container>
-    </Paper>
+
+        <Button fullWidth sx={{ mt: 3, mb: 2 }} variant="contained" type="submit" onClick={handleSubmit}>Registrar</Button>
+        
+        {(submitError) && <div><Alert severity="error">{items}</Alert></div>}
+        {(success) && <div><Alert severity="success">{sucessMsg}</Alert></div>} 
+
+        <Link to="/">Já possui uma conta?</Link>
+      </Box>
+    </Container>
   );
 }

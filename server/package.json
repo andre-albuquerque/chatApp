@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "App.js",
-    "scripts": {
+  "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon Index.js"
   },
@@ -15,6 +15,7 @@
   "author": "andre",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
@@ -24,6 +25,7 @@
     "express-validator": "^6.14.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.7",
+    "nodemon": "^2.0.15",
     "socket.io": "^4.4.1"
   }
 }

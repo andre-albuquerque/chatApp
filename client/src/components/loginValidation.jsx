@@ -5,7 +5,7 @@ function loginValidate(props){
     if (!props.email){
         errors.email = 'Email é obrigatório!'
     }else if (!regex.test(props.email)){
-        errors.email = 'Email inválido!'
+      errors.email = 'Email inválido!'
     }
 
     if (!props.password){

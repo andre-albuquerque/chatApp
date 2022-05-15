@@ -1,0 +1,52 @@
+header {
+    height: 8%;
+    width: 100%;
+    display: flex;
+    background-color: #a3baca;
+}
+
+.container {
+    display: flex;
+    flex-direction: row; 
+    align-content: flex-start;
+    align-items: center;
+}
+
+.item {
+    margin-left: 45px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    flex-shrink: 3;
+}
+
+.item#name {
+    margin-left: 5px;
+}
+
+.item#admin {
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.item#adminicon {
+    cursor: pointer;
+}
+
+#text {
+    margin-right: 1px;
+    margin-left: auto;
+    text-align: center;    
+    margin-top: 30px;  
+    margin-bottom: 20px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.logout {
+    margin-top: 22px;
+    margin-left: 10px;
+    margin-right: 45px;
+    align-items: center;
+    cursor: pointer;
+}
+
