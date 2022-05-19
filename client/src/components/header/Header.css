@@ -3,6 +3,7 @@ header {
     width: 100%;
     display: flex;
     background-color: #a3baca;
+    min-width: 530px;
 }
 
 .container {
@@ -12,11 +13,23 @@ header {
     align-items: center;
 }
 
+@media(max-width: 800px) {
+    .container {
+     font-size: 14px;
+    }
+   }
+
 .item {
     margin-left: 45px;
     margin-top: 10px;
     margin-bottom: 10px;
     flex-shrink: 3;
+}
+
+@media(max-width: 800px) {
+    .item {
+        margin-left: 0px;
+    }
 }
 
 .item#name {
@@ -28,6 +41,22 @@ header {
     cursor: pointer;
 }
 
+@media(max-width: 800px) {
+    .item#admin  {
+        margin-left: 0px;
+    };
+    
+}
+
+@media(max-width: 800px) {
+    .item#name  {
+        margin-left: 0px;
+        margin-right: 20px
+    };
+}
+
+
+
 .item#adminicon {
     cursor: pointer;
 }
@@ -36,17 +65,31 @@ header {
     margin-right: 1px;
     margin-left: auto;
     text-align: center;    
-    margin-top: 30px;  
+    margin-top: 26px;  
     margin-bottom: 20px;
     align-items: center;
     cursor: pointer;
 }
 
+@media(max-width: 800px) {
+    #text {
+     font-size: 14px;
+    }
+   }
+
 .logout {
-    margin-top: 22px;
+    margin-top: 10px;
     margin-left: 10px;
     margin-right: 45px;
     align-items: center;
     cursor: pointer;
 }
+
+@media(max-width: 800px) {
+    .logout  {
+        margin-right: 0px;
+        margin-left: 3px;
+    }
+   }
+
 

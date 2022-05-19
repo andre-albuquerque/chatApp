@@ -4,25 +4,45 @@
     background-color: #d1d7db;
 }
 
+.backImg {
+    flex: 0.7;
+    height: 89vh;   
+    width: 50vw;
+}
+
 .chat_header {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex: 0.7;
     height: 5vh;
+    min-width: 392px;
     align-content: center;
     align-items: center;
     background-color: #6d7275;
-    justify-content: center
+    justify-content: flex-start
 }
 
 .group_item {
-    margin-right: 16px;
+    margin-right: 2px;
+}
+
+.usersGroup {
+    display: flex;
+    flex-direction: row;
+    margin: 3px;
+    font-size: small;
+}
+
+.userTyping {
+    margin-left: 10px;
+    font-size: small;
 }
 
 .chat_body {
     flex: 1;
     height: 77.5vh;
-    overflow-y: scroll;
+    overflow-y: auto;
+    overflow: auto;
 }
 
 .chat_message {
@@ -35,6 +55,7 @@
     width: fit-content;
     background-color: #ffffff;
 }
+
 
 .chat_reciever {
     margin-left: auto;
@@ -84,5 +105,6 @@
 }
 
 .MuiSvgIcon-root {
-    padding: 10px
+    padding: 10px;
+    cursor: pointer;
 }

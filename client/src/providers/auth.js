@@ -43,7 +43,7 @@ export const AuthProvider = ({children}) => {
         if (token) {
             setAuthenticated(true)
             Api.defaults.headers.Authorization = `Bearer ${cookies}`;
-            navigate("/rooms")
+            navigate("/chat")
         }
 
         setLoading(false);            
@@ -94,7 +94,7 @@ export const AuthProvider = ({children}) => {
         setValues({
             email: '',
             password: ''
-          })
+        })
 
         setError(false)
 

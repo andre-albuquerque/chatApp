@@ -1,13 +1,10 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { AuthContext } from '../providers/auth';
 import io from 'socket.io-client';
 import { useNavigate } from "react-router-dom";
 import Api from '../api/api';
 import Header from '../components/header/header'
 import Sidebar from '../components/sidebar/sidebar'
-import Paper from '@mui/material/Paper';
-import { MessageLeft, MessageRight } from '../components/message/message';
 
 import Messages from "../components/message/Messages"
 
@@ -75,45 +72,12 @@ export default function Chat(){
         }
 	}
 
-    useEffect(()=>{
-        const getChat = async () =>{
-            try {
-                await Api.post('chat/getChat', {
-                    group: room
-                }).then( response =>{
-                    const messageChat = response.data.chatMessages 
-                    setMessages(messageChat)
-                })
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        getChat();
-    },[room, messages])
-
-    const renderChat = () => {
-        
-		return <div >
-                    <Paper Depth={2}>
-                        <Paper >
-                            {messages.map(({ message, name, time }, index) => (
-                            <MessageLeft
-                            message = {message}
-                            timestamp = {<Moment format="hh:mm">{(time).toLocaleString('pt-BR', { timeZone: 'America/Recife' })}</Moment>}
-                            />
-                            ))}
-                        </Paper>
-                    </Paper>
-                </div>
-    };
-
-    return(
+    return (
         <div className="app">    
             <div className="app_body">
                 <Header className="header">Header</Header>
                 <div className="container">
                     <Sidebar />
-                    <Messages />
                     {error && <div>Erro ao salvar as mensagens.</div>}
                 </div>
             </div>    

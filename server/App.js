@@ -52,9 +52,14 @@ io.on('connection', (socket) => {
         socket.join(room)
      })
     
-    socket.on('message', ({ room, name, message })=>{   
-        io.to(room).emit('message', { name, message })
-        console.log(name,  message, room)   
+    socket.on('message', ({ room, username, message })=>{   
+        io.to(room).emit('message', { username, message })
+        console.log(username, message, room)   
+    })
+
+    socket.on('typing', (username)=>{
+        console.log(username)
+        socket.broadcast.emit("typing", username)
     })
 
     socket.on('disconnect', ()=>{

@@ -15,7 +15,7 @@ const Chat = new Schema({
     },
     time: {
         type: Date,
-        default: date.toLocaleString('pt-BR', { timeZone: 'America/Recife' })
+        default: date
     }
 });
 

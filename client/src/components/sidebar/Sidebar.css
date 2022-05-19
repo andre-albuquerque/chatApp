@@ -2,12 +2,13 @@
     flex: 0.3;
     height: 89vh;
     background-color: white;
+    border-right: 1px solid #d9e2e7;
 }
 
 .sidebar_groupItem {
     cursor: pointer;
 }
 
-.sidebar_groupItem:hover {
-    background-color: #ebebeb;
-}
+.sidebar_groupItem:hover {  
+    background-color: #ebebeb !important;
+}  
