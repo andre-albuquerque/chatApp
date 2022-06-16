@@ -1,15 +1,23 @@
 .app {
-    display: grid;
+    display: flex;
+    justify-content: center;
     place-items: center;
     background-color: #dadbd3;
-    height: 100vh;
+    height: 969px;
+    min-width: 745px;
        
+}
+
+.container--chat {
+    display: flex;
+    height: 861px;
 }
 
 .app_body {
     background-color: #ededed;
-    height: 95vh;
-    width: 70vw;
+    height: 931px;
+    min-height: 95vh;
+    width: 1360px;
     min-width: 550px;
     box-shadow: -1px 4px 20px -6px rgba(0, 0, 0, 0.7);
 }
@@ -20,5 +28,3 @@
     height: 5vh;
     font-size: 25px;
 }
-
-

@@ -11,4 +11,6 @@ router.post('/saveChat', jsonParser, chatController.saveChat);
 
 router.post('/getChat', jsonParser, chatController.getChat);
 
+router.post('/getRecentChat', jsonParser, chatController.getRecentChat)
+
 module.exports = router;

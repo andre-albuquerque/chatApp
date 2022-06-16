@@ -1,22 +1,45 @@
-import React, {createContext, useEffect, useState} from "react";
+import React, {createContext, useEffect, useState, useRef} from "react";
 
-import Api from '../../api/api'
+import Api from '../../api/api';
+import io from 'socket.io-client';
+
 import './Sidebar.css';
-import Messages from '../message/Messages'
 
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
+import Messages from "../message/Messages"
+ 
+import { Avatar } from "@material-ui/core";
 import Divider from '@mui/material/Divider';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import GroupIcon from '@mui/icons-material/Group';
+
+import Moment from 'react-moment';
+import 'moment-timezone';
 
 const Sidebar = () => {
-
+    
+        
     const [roomName, setRoomName] = useState([]);
-    const [hasError, setError] = useState(false);
+    
+    const [error, setError] = useState(false);
+
     const [room, setRoom] = useState()
 
-   
+    const [messages, setMessages] = useState([]);
+
+    const [newMessage, setNewMessage] = useState(false);
+
+    const [key, setKey] = useState('')
+
+    const socketRef = useRef();
+
+
+    useEffect(() => {
+        socketRef.current = io.connect("http://localhost:8081")
+        socketRef.current.on("NewMessage", () => {
+            setNewMessage(true)  
+        })
+        
+    });
+
+    
     useEffect(()=>{
         async function getRooms (){
             try {
@@ -27,11 +50,47 @@ const Sidebar = () => {
                 setError(true)
             }
         }
-        getRooms()
+        getRooms()        
+
     }, []);
 
 
-    const [key, setKey] = useState('')
+    let messagesResponse=[]
+
+    const getChat = async () =>{
+
+        try {
+            for (let i=0; i < roomName.length; i++){
+                await Api.post('chat/getRecentChat', {
+                    group: roomName[i].room
+                }).then( response => { 
+                    if (response) {
+                    let messageChat = response.data.chatMessages
+
+                    if (messageChat.length > 0) {
+                        messagesResponse.push({messageChat})
+                    }                                         
+                   
+                }})
+                
+            }            
+        } catch (error) {
+            console.log(error)
+        }  
+
+        setMessages([messagesResponse])  
+                     
+    };         
+  
+    
+    useEffect(()=>{
+
+        getChat();  
+        
+        setNewMessage(false);
+
+    },[roomName, room, newMessage])    
+    
 
     const HandleRoom = (e, i) =>{                     
         setRoom(e)
@@ -43,24 +102,38 @@ const Sidebar = () => {
             document.getElementById(`${key}`).style.backgroundColor = "white"
             document.getElementById(`${i}`).style.backgroundColor = "#ebebeb"
         }
-
     }
+    
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-
-    return (   
-        <>  
+    return (
+        <>       
             <div className="sidebar">
-                    {roomName.map(({ room }, key) => (
-                        <ListItem id={key} className="sidebar_groupItem">
-                            <ListItemAvatar>
-                                <GroupIcon />
-                            </ListItemAvatar>
-                            <ListItemText className="listItemText" onClick={() => HandleRoom(room, key)}>
-                                {room}
-                                <Divider />
-                            </ListItemText>
-                        </ListItem>
-                    ))}
+                {roomName ? roomName.map(( { room }, key) => (                    
+                    <div id={key} className="sidebarChat"> 
+                        <Avatar />  
+                        
+                        <div className="sidebarChat--info" onClick={() => HandleRoom(room, key)} >             
+                        <div id="roomName">{ room }</div>
+
+                            {messages && messages[0].map((msg, index) => (
+                                <>
+                                <div className="room--time">  
+                                    {room === msg.messageChat[0].group && <div className="recentMessages">{msg.messageChat[0].name}: {msg.messageChat[0].message}</div>}
+                                    <div id="time">                                    
+                                        {room === msg.messageChat[0].group && <Moment format="DD/MM HH:mm">{(msg.messageChat[0].time).toLocaleString('pt-BR', { timeZone: {timezone} })}</Moment>}
+                                    </div>
+                                </div>  
+                                </>
+                            ))} 
+
+                        </div>  
+
+                        <Divider />                                              
+                    </div>                    
+                                    
+                )) : <img src="\client\src\components\loading-image\282.gif" alt="Loading icon" />}
+
             </div>
 
             <RoomProvider room={room} />

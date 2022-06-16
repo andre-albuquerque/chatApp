@@ -41,25 +41,27 @@ app.use((req, res, next)=>{
 
 connectDatabase();
 
+let clients = [];
 
-const clients = [];
 
 io.on('connection', (socket) => {
     console.log(`Client connected: ${socket.id}`)
     clients.push(socket.id)
 
-    socket.on('joinroom', room => {
+    socket.on('joinroom', (room, callback) => {
         socket.join(room)
      })
     
-    socket.on('message', ({ room, username, message })=>{   
-        io.to(room).emit('message', { username, message })
-        console.log(username, message, room)   
+    socket.on('message', ({ room, username, message, time })=>{   
+        io.to(room).emit('message', { username, message, time })
+
+        io.emit('NewMessage', {room, username, message, time})
+
     })
 
-    socket.on('typing', (username)=>{
+    socket.on('typing', (username, room)=>{
         console.log(username)
-        socket.broadcast.emit("typing", username)
+        socket.broadcast.emit("typing", username, room)
     })
 
     socket.on('disconnect', ()=>{
@@ -67,6 +69,8 @@ io.on('connection', (socket) => {
         console.log(`Client disconnected ${socket.id}`)
     });
 });
+
+
 
 app.use('/users', users);
 app.use('/rooms', rooms);

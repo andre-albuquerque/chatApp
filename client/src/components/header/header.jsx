@@ -17,7 +17,7 @@ const Header = () =>{
     }    
     return (
         <header>
-            <session class="container">
+            <session class="container--header">
                 <AccountCircleIcon className="item" fontSize="large" />
                 <span class="item" className="item" id="name">{name}</span>
                 {user.admin===true && <AdminPanelSettingsIcon className="item" id="adminicon"  fontSize="large" onClick={handleAdmin}/>}

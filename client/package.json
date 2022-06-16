@@ -14,6 +14,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.26.1",
     "bcryptjs": "^2.4.3",
+    "loading-svg": "^1.0.0",
     "moment": "^2.29.2",
     "moment-timezone": "^0.5.34",
     "mongoose": "^6.2.7",

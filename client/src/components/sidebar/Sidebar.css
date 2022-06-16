@@ -1,14 +1,72 @@
 .sidebar {
     flex: 0.3;
-    height: 89vh;
+    height: 860px;
+    width: 400px;
+    min-width: 247px;
     background-color: white;
     border-right: 1px solid #d9e2e7;
+    flex-direction: row;;
+    overflow-y: auto;
 }
 
-.sidebar_groupItem {
+.sidebarChat {
     cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    padding: 20px;
+    align-items: center;
 }
 
-.sidebar_groupItem:hover {  
+.sidebarChat:hover {  
     background-color: #ebebeb !important;
-}  
+}
+
+.sidebarChat--info {
+    padding-left: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.room--time {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+#roomName {
+    font-size: 17px;
+}
+
+.room--time > #time {
+    width: 13vw;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    min-width: 86px;
+    font-size: 12px;
+    padding-top: 3px;    
+}
+
+@media(max-width: 850px) {
+    .room--time > #time {
+        font-size: 11px;
+    }
+}
+
+.recentMessages {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space:nowrap;
+    color: #3b4a54;
+    font-size: 14px;
+    font-weight: 400;
+    padding-top: 7px;
+    width: 25vw;
+}
+
+.MuiDivider-root {
+    display: flex;
+    padding-top: 13px;
+}
