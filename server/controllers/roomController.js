@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 require('../models/Room');
 const Room = mongoose.model('room');
 
+
 module.exports = {
     async addRoom (req, res){
         try {

@@ -71,7 +71,8 @@ module.exports = {
                 if (success) {
                     const token = jwt.sign({
                         id_user: user._id,
-                        email: user.email
+                        email: user.email,
+                        admin: user.isAdmin
                     }, process.env.JWT_KEY, 
                     {expiresIn: 60*15}
                     ); 
@@ -80,12 +81,12 @@ module.exports = {
                         expires:new Date(Date.now() + 900000),
                         sameSite: 'none', secure: true, httpOnly: false
                     });
-
                    
                     return res.status(201).json({msg: 'Autenticado com sucesso!', 
                                                 username: user.username,
                                                 admin: user.isAdmin,
-                                                message: user.message})
+                                                message: user.message,
+                                                token: token})
                 }
                 return res.status(401).json({message: 'Falha na autenticação 3'})                       
             })               

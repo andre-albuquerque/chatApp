@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-let date = new Date();
-
 const Room = new Schema({
     room: {
         type: String,
@@ -10,7 +8,7 @@ const Room = new Schema({
     },
     createdAt: {
         type: Date,
-        default: date
+        default: Date.now
     }
 })
 
