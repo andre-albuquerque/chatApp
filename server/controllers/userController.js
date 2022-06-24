@@ -81,13 +81,26 @@ module.exports = {
                         expires:new Date(Date.now() + 900000),
                         sameSite: 'none', secure: true, httpOnly: false
                     });
-                   
+
+                    res.cookie('user', user.username, {                        
+                        expires:new Date(Date.now() + 900000),
+                        sameSite: 'none', secure: true, httpOnly: false
+                    })
+
+                    if (user.isAdmin === true) {
+                        res.cookie('admin', user.isAdmin, {                        
+                            expires:new Date(Date.now() + 900000),
+                            sameSite: 'none', secure: true, httpOnly: false
+                        })
+                    }
+
                     return res.status(201).json({msg: 'Autenticado com sucesso!', 
                                                 username: user.username,
                                                 admin: user.isAdmin,
                                                 message: user.message,
                                                 token: token})
                 }
+
                 return res.status(401).json({message: 'Falha na autenticação 3'})                       
             })               
 

@@ -4,7 +4,7 @@ import Header from '../components/header/header'
 import Sidebar from '../components/sidebar/sidebar'
 import Messages from '../components/message/Messages';
 
-import './chat/Chat.css'
+import './styles/Chat.css'
 
 import 'moment-timezone';
 

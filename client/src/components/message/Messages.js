@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import io from 'socket.io-client';
 import Api from '../../api/api';
 
-
 import "./Messages.css";
 
 import GroupIcon from '@mui/icons-material/Group';
@@ -16,6 +15,10 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+
+import Cookies from 'js-cookie'
 
 import { RoomContext } from "../sidebar/sidebar";
 import { AuthContext } from "../../providers/auth";
@@ -30,11 +33,11 @@ export default function Messages() {
 
     const { room }  = useContext(RoomContext);
 
-    const { user } = useContext(AuthContext);
-
+    const { user } = useContext(AuthContext)
+ 
     const [messages, setMessages] = useState([]);
 
-    const username = user.username;
+    let username = user.username
 
     const [chat, setChat] = useState([]);
 
@@ -214,8 +217,7 @@ export default function Messages() {
                                 </p>
                                 <span className={`chat_timestamp---reciever ${name === username && 'chat_timestamp'}`}>{<Moment format="DD/MM HH:mm">{(time)}</Moment>}</span>
                             </div>
-                        ))}
-
+                        )) }
 
 
                         {chat !== undefined && chat.map(({ message, username, time }) => (

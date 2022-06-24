@@ -9,6 +9,8 @@ import Messages from "../message/Messages"
  
 import { Avatar } from "@material-ui/core";
 import Divider from '@mui/material/Divider';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 import Moment from 'react-moment';
 import 'moment-timezone';
@@ -109,7 +111,7 @@ const Sidebar = () => {
     return (
         <>       
             <div className="sidebar">
-                {roomName ? roomName.map(( { room }, key) => (                    
+                {roomName.length > 0 ? roomName.map(( { room }, key) => (                    
                     <div id={key} className="sidebarChat"> 
                         <Avatar />  
                         
@@ -132,7 +134,7 @@ const Sidebar = () => {
                         <Divider />                                              
                     </div>                    
                                     
-                )) : <img src="\client\src\components\loading-image\282.gif" alt="Loading icon" />}
+                )) :   <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', height: '200px' }}>  <CircularProgress />  </Box>}
 
             </div>
 

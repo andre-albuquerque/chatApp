@@ -67,18 +67,27 @@ export default function SignUp() {
 
   return (
   
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="xs"         
+      sx={{
+        position: 'center',
+        mr: '1000px',
+        whidth: 20
+    }}>
       <Box component="form" onSubmit={handleSubmit} noValidate
         sx={{
-          mt: 8,
+          mt: 4,
           mb: 3,
-          position: 'relative',
-          marging: '10px auto',
+          mr: 9,
+          padding: 10,
+          height: 'auto',
+          width: '800px',
+          position: 'center',
           display: 'block',
           flexDirection: 'column',
           alignItems: 'center',
-          textAlign: 'center'
-        }}
+          textAlign: 'center',
+          zIndex: 'modal'
+          }}
       >
         <Typography component="h1" variant="h5">
           Crie uma conta

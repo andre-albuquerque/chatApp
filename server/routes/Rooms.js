@@ -5,7 +5,6 @@ const router = express.Router();
 const checkAuth = require('../middleware/login')
 const isAdmin = require('../middleware/isAdmin')
 
-
 const jsonParser = bodyParser.json()
 
 const roomController = require('../controllers/roomController')

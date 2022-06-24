@@ -1,0 +1,42 @@
+.app--admin::after {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 127px;
+    content: "";
+    background-color: #006da8;
+}
+
+.app--admin {
+    display: flex;
+    justify-content: center;
+    place-items: center;
+    background-color: #dadbd3;
+    height: 969px;
+    min-width: 745px;
+}
+
+.body--admin {
+    background-color: #ffffff;
+    height: 931px;
+    min-height: 95vh;
+    width: 1360px;
+    min-width: 550px;
+    z-index: 1;
+    box-shadow: -1px 4px 20px -6px rgb(0 0 0 / 70%);
+}
+
+
+.header--admin {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: -40px;
+}
+
+.logout--admin {
+    margin-top: 0px; 
+    margin-left: 10px;
+    margin-right: 0px;
+}

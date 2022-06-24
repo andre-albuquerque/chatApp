@@ -9,20 +9,28 @@ export default function Home(){
     const { handleLogin, loginErrors, hasError, values, handleChange } = useContext(AuthContext)
 
     return(        
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth="xs" 
+            sx={{position: 'center',
+            mr: '1100px',
+            whidth: 20,
+            }}>
             <Box 
                 component="form" 
                 onSubmit={handleLogin} 
                 noValidate  
                 sx={{
-                    mt: 8,
+                    mt: 4,
                     mb: 3,
-                    position: 'relative',
-                    marging: '10px auto',
+                    mr: 9,
+                    padding: 20,
+                    height: 'auto',
+                    width: '800px',
+                    position: 'center',
                     display: 'block',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    textAlign: 'center'
+                    textAlign: 'center',
+                    zIndex: 'modal'
                 }}
             >
                 <Typography component="h2" variant="h5">

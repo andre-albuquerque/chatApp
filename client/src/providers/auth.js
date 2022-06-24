@@ -1,4 +1,5 @@
 import React, { createContext, useEffect, useState} from 'react';
+import Cookies from 'js-cookie'
 import { useCookies } from 'react-cookie';
 import { useNavigate } from "react-router-dom";
 
@@ -17,10 +18,16 @@ export const AuthProvider = ({children}) => {
 
     const [user, setUser] = useState({})
 
+    const [admin, setAdmin] = useState({})
+
     const [hasError, setError] = useState(false);
     const [loginErrors, setLoginErrors] = useState({});
 
     const [cookies, setCookie] = useCookies(['token']);
+
+    const [userCookies, setUserCookie] = useCookies(['user', 'admin']);
+    
+    
     
     const [values, setValues] = useState({
         email: '',
@@ -40,15 +47,31 @@ export const AuthProvider = ({children}) => {
     useEffect(()=>{
         const token = cookies.token;
 
-        if (token) {
+        const username = userCookies.user
+
+        const admin = userCookies.admin
+
+        console.log(username, admin)
+
+        if (token) { 
             setAuthenticated(true)
-            Api.defaults.headers.Authorization = `Bearer ${cookies}`;
+            Api.defaults.headers.Authorization = `Bearer ${token}`;
             navigate("/chat")
+        }
+
+        if (username && admin) {
+            setUser({"username": username})
+
+            if (admin === 'true') {
+                setAdmin(true)
+            }
+            
         }
 
         setLoading(false);            
         
     }, [cookies]);
+
    
     const handleLogin = async (e) => {    
 
@@ -72,14 +95,13 @@ export const AuthProvider = ({children}) => {
             
             if (login) {
                 setUser(login.data)
-                localStorage.setItem('username', `${login.data.username}`)
                 setAuthenticated(true);            
-                Api.defaults.headers.Authorization = `Bearer ${cookies}`;
-                navigate("/chat")           
+                Api.defaults.headers.Authorization = `Bearer ${login.data.token}`;
+                navigate("/chat")  
             }
 
-            setLoading(false);
-                                            
+            setLoading(false);            
+                                                        
         } catch (error) {
             setError(true)
         }
@@ -87,9 +109,9 @@ export const AuthProvider = ({children}) => {
 
     function handleLogout() {
         setAuthenticated(false)
-        setCookie("token", "")
-        localStorage.removeItem("username")
-        localStorage.removeItem("room")
+        Cookies.remove("token")
+        Cookies.remove("user")
+        Cookies.remove("admin")
         Api.defaults.headers.Authorization = undefined;
         setValues({
             email: '',
@@ -102,7 +124,7 @@ export const AuthProvider = ({children}) => {
     }
 
     return (
-        <AuthContext.Provider value={ { user, authenticated, handleLogin, handleLogout, loginErrors, hasError, values, handleChange }}>
+        <AuthContext.Provider value={ { user, admin, authenticated, handleLogin, handleLogout, loginErrors, hasError, values, handleChange }}>
             {children}    
         </AuthContext.Provider>
     );
