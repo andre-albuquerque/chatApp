@@ -2,6 +2,7 @@
     position: fixed;
     top: 0;
     width: 100%;
+    min-width: 800px;
     height: 127px;
     content: "";
     background-color: #006da8;
@@ -24,8 +25,8 @@
     min-width: 550px;
     z-index: 1;
     box-shadow: -1px 4px 20px -6px rgb(0 0 0 / 70%);
+    overflow: auto;
 }
-
 
 .header--admin {
     display: flex;
@@ -33,10 +34,11 @@
     align-items: center;
     justify-content: space-between;
     margin-bottom: -40px;
+    margin-left: -17px;
 }
 
 .logout--admin {
     margin-top: 0px; 
     margin-left: 10px;
-    margin-right: 0px;
+    margin-right: -10px;
 }

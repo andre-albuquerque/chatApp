@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 require('../models/Room');
 const Room = mongoose.model('room');
+const Chat = mongoose.model('chat');
 
 
 module.exports = {
@@ -35,16 +36,21 @@ module.exports = {
         }
     },
 
-    async deleteRoom (req, res) {
+    async deleteRoom (req, res, next) {
         try {
             const room = await Room.findOne({room: req.body.room});
             console.debug({"room": req.body.room})
             if (!room){
                 return res.status(409).json({message:'Grupo não encontrado.'});     
             }
-            await Room.deleteOne({ room: req.body.room }).then(()=>{
-                return res.status(201).json({message: 'Grupo excluído com sucesso!'})
-            });            
+            Promise.all([
+                Chat.deleteMany({ group: req.body.room }),
+                Room.deleteOne({ room: req.body.room })                                 
+            ]).then(()=>{
+                return res.status(201).json({message: 'Grupo excluído com sucesso!'});
+            })
+
+         
         } catch (error) {
             return res.status(500).json({erro: error})
         }

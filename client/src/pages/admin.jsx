@@ -104,23 +104,29 @@ export default function Admin(){
 
     const postRooms = async (e) =>{
 
-        try {
-            const addGroup = await Api.post('/rooms/createRoom',{
-                room: roomName.room
-            })
-            if (addGroup){
-                setSuccess(true);
-                setError(false);
-                setRoomName("")
-                setTimeout(() => {
-                    setSuccess(false)
-                }, 4000);                         
+        if (roomName.room.length > 0) {
+            try {
+                const addGroup = await Api.post('/rooms/createRoom',{
+                    room: roomName.room
+                })
+                if (addGroup){
+                    setSuccess(true);
+                    setError(false);
+                    setRoomName("")
+                    setTimeout(() => {
+                        setSuccess(false)
+                    }, 5000);                         
+                }
+    
+            } catch (error) {
+                setError(true)
+                setErrorValue(error.response.data.message)
+                setTimeout(()=>{
+                    setError(false)
+                }, 5000)
             }
-
-        } catch (error) {
-            setError(true)
-            setErrorValue(error.response.data.message)
         }
+
         
     }
 
@@ -153,37 +159,42 @@ export default function Admin(){
                 setUpdateName("");
                 setTimeout(() => {
                     setUpdate(false)
-                }, 4000)   
+                }, 5000)   
             }
 
         } catch (error) {
             setError(true)
             setErrorValue(error.response.data.message)
+            setTimeout(()=>{
+                setError(false)
+            }, 5000)
         }       
         
     }
 
     const deleteRoom = async (e) =>{  
+        
+        try {
+            const delGroup = await Api.delete('/rooms/deleteRoom', {
+                data: {room: e}
+            })
+            if (delGroup){
+                setDelete(true);
+                setError(false);
+                setDeleteName("");
+                setTimeout(() => {
+                    setDelete(false)
+                }, 5000)   
+            }
 
-        if ( window.confirm(`Exluir grupo ${e}?`)){
-            try {
-                const delGroup = await Api.delete('/rooms/deleteRoom', {
-                    data: {room: e}
-                })
-                if (delGroup){
-                    setDelete(true);
-                    setError(false);
-                    setDeleteName("");
-                    setTimeout(() => {
-                        setDelete(false)
-                    }, 4000)   
-                }
-
-            } catch (error) {
-                setError(true)
-                setErrorValue(error.response.data.message)
-            }       
-        }
+        } catch (error) {
+            setError(true)              
+            setErrorValue(error.response.data.message)
+            setTimeout(()=>{
+                setError(false)
+            }, 5000)
+        }       
+        
     }   
 
 
@@ -195,7 +206,8 @@ export default function Admin(){
                 position: 'center',
                 mr: '750px',
                 whidth: 20
-            }}>
+            }}
+            >
                 
                 <Box component="form" noValidate
                     sx={{
@@ -205,7 +217,13 @@ export default function Admin(){
                         padding: 10,
                         paddingBottom: "20px",
                         height: 'auto',
-                        width: '800px',
+                        width: {
+                            xs: 300,
+                            sm: 600,
+                            md: 800,
+                            lg: 800,
+                            xl: 800 
+                          },  
                         position: 'center',
                         display: 'block',
                         flexDirection: 'column',
@@ -216,7 +234,7 @@ export default function Admin(){
                     >
                     
                     <div className="header--admin">
-                        <ArrowBackIcon fontSize="large" onClick={handleBack}/>
+                        <ArrowBackIcon className="backIcon--admin" fontSize="large" onClick={handleBack}/>
                         
                         <Typography component="h1" variant="h4">
                             Administrador
@@ -224,9 +242,7 @@ export default function Admin(){
 
                         <LogoutIcon className="logout--admin" fontSize="large" onClick={handleLogout}/>
                     </div>
-
-
-                    {hasError && <Alert severity="error">{errorValue}</Alert>}
+                    
 
                     <Box component="form" noValidate 
                         sx={{
@@ -246,7 +262,7 @@ export default function Admin(){
                             Novo Grupo
                         </Typography>                
 
-                        <TextField label="Nome" fullWidth margin="normal" name="room" id={roomName} value={roomName.room || ""} placeholder='Digite o nome do novo grupo' onChange={(e)=>handleChange(e)}/>
+                        <TextField label="Nome" fullWidth margin="normal" name="room" id={roomName} value={roomName.room || ""} autocomplete="off" placeholder='Digite o nome do novo grupo' onChange={(e)=>handleChange(e)}/>
                         <Button sx={{ mt: 3, mb: 2 }} variant="contained" type="submit" onClick={(e)=>{e.preventDefault(); postRooms(roomName.room)}}>Salvar</Button>
                         {(success) && <div><Alert severity="success">Grupo cadastrado com sucesso!</Alert></div>} 
                     
@@ -336,10 +352,10 @@ export default function Admin(){
                             Selecione um grupo para alterar
                         </Typography>                
 
-                        {deleteValue && <Alert severity="success">Grupo excluído com sucesso!</Alert>}
+                        {(deleteValue===true) && <Alert severity="success">Grupo excluído com sucesso!</Alert>}
                         {updateValue && <Alert severity="success">Grupo atualizado com sucesso!</Alert>}
                         {(getError && !groups)  && <Alert severity="error">Não foi possível carregar os grupos.</Alert>}
-                        {(groups.length > 0) ? groups.map(({ room }, index) => (
+                        {(groups.length > 0 || groups !== undefined) ? groups.map(({ room }, index) => (
                             <div>
                                 <Button key={index} value={room} sx={{ mt: 3, mb: 2 }} variant="outlined" size="large" type="submit" onClick={(e)=>{e.preventDefault(); handleClick(e); DeleteName(room); setPrevName(room)}} >{room}</Button>
                             </div>

@@ -5,6 +5,8 @@ import Api from '../../api/api';
 
 import "./Messages.css";
 
+import {ReactComponent as ReactLogo} from  "../../components/logo/logo.svg";
+
 import GroupIcon from '@mui/icons-material/Group';
 import SendIcon from '@mui/icons-material/Send';
 import Dialog from '@mui/material/Dialog';
@@ -15,10 +17,8 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
-import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
-import Cookies from 'js-cookie'
 
 import { RoomContext } from "../sidebar/sidebar";
 import { AuthContext } from "../../providers/auth";
@@ -38,6 +38,8 @@ export default function Messages() {
     const [messages, setMessages] = useState([]);
 
     let username = user.username
+
+    const [uniquesUsers, setUniquesUsers] = useState([])
 
     const [chat, setChat] = useState([]);
 
@@ -60,6 +62,7 @@ export default function Messages() {
         if (room){ 
             navigate('/chat');
             setChat([]);
+            setMessages([]);
         }
     }, [room]) 
 
@@ -121,11 +124,23 @@ export default function Messages() {
 
     },[room])
 
-    let uniquesUsers = ''
 
-    if (messages !== undefined){
-        uniquesUsers = messages.map(({name}) => name).filter((value, index, self) => self.indexOf(value) === index)
-    }
+    useEffect(()=> {
+        if (chat.length > 0) {
+            setUniquesUsers(chat.map(({username}) => username).filter((value, index, self) => self.indexOf(value) === index))
+            console.log(chat)
+        }
+        if (messages.length > 0) {
+            setUniquesUsers(messages.map(({name}) => name).filter((value, index, self) => self.indexOf(value) === index))
+            console.log(messages)
+        }
+        else {
+            setUniquesUsers([])
+        }
+
+    }, [chat, messages])
+
+
 
     const onMessageSubmit = async (e) => {
 
@@ -255,7 +270,12 @@ export default function Messages() {
     }
     
     return <div className="chat--container">
-            {room ? renderChat() : ""}                                 
+            {room ? renderChat() : <div className='chatlogo'>
+                                        <ReactLogo id="chatLogo--chat" width="200" height="300"/> 
+                                        <div>
+                                            <Typography variant="subtitle1" sx={{color: "rgb(142, 142, 142)"}}>Escolha um grupo para mandar mensagens</Typography>
+                                        </div>
+                                    </div>}                                 
         </div>
 }
 

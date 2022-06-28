@@ -64,6 +64,8 @@
     margin-bottom: -11px;
     padding-bottom: 0px;
     cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .group_icon {
@@ -144,6 +146,21 @@
 
 }
 
+.chatlogo {
+    display: flex;
+    flex-direction: column;
+    height: 860px;
+    min-height: 450px;
+    min-width: 499px;
+    flex: 0.7 1;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+}
+
+#chatLogo--chat {
+    margin-top: -148px;
+}
 
 .message {
     margin: 2px 5px 2px 5px;

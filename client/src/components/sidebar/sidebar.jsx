@@ -7,7 +7,7 @@ import './Sidebar.css';
 
 import Messages from "../message/Messages"
  
-import { Avatar } from "@material-ui/core";
+import GroupIcon from '@mui/icons-material/Group';
 import Divider from '@mui/material/Divider';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
@@ -37,8 +37,7 @@ const Sidebar = () => {
         socketRef.current = io.connect("http://localhost:8081")
         socketRef.current.on("NewMessage", () => {
             setNewMessage(true)  
-        })
-        
+        })        
     });
 
     
@@ -54,7 +53,7 @@ const Sidebar = () => {
         }
         getRooms()        
 
-    }, []);
+    }, [room]);
 
 
     let messagesResponse=[]
@@ -111,9 +110,9 @@ const Sidebar = () => {
     return (
         <>       
             <div className="sidebar">
-                {roomName.length > 0 ? roomName.map(( { room }, key) => (                    
+                {(roomName.length > 0 || roomName !== undefined) ? roomName.map(( { room }, key) => (                    
                     <div id={key} className="sidebarChat"> 
-                        <Avatar />  
+                        <GroupIcon />  
                         
                         <div className="sidebarChat--info" onClick={() => HandleRoom(room, key)} >             
                         <div id="roomName">{ room }</div>

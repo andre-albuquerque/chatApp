@@ -1,6 +1,5 @@
 import React, {useContext} from "react";
 import { useNavigate } from "react-router-dom";
-import Cookies from 'js-cookie'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -11,8 +10,6 @@ import { AuthContext } from '../../providers/auth';
 const Header = () =>{
 
     const { user, admin, handleLogout } = useContext(AuthContext);
-
-    console.log(admin)
 
     let navigate = useNavigate();
 

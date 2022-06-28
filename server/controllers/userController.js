@@ -74,22 +74,22 @@ module.exports = {
                         email: user.email,
                         admin: user.isAdmin
                     }, process.env.JWT_KEY, 
-                    {expiresIn: 60*15}
+                    {expiresIn: "12h"}
                     ); 
          
                     res.cookie('token', token, {
-                        expires:new Date(Date.now() + 900000),
+                        expires:new Date(Date.now() + 9000000),
                         sameSite: 'none', secure: true, httpOnly: false
                     });
 
                     res.cookie('user', user.username, {                        
-                        expires:new Date(Date.now() + 900000),
+                        expires:new Date(Date.now() + 9000000),
                         sameSite: 'none', secure: true, httpOnly: false
                     })
 
                     if (user.isAdmin === true) {
                         res.cookie('admin', user.isAdmin, {                        
-                            expires:new Date(Date.now() + 900000),
+                            expires:new Date(Date.now() + 9000000),
                             sameSite: 'none', secure: true, httpOnly: false
                         })
                     }
