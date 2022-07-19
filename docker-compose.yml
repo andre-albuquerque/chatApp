@@ -3,6 +3,8 @@ version: "3.9"
 services:
   server:
     image: chat-server:0.0.1
+    container_name: server-chatApp
+    restart: always
     ports:
       - 8081:8081
     working_dir: /server
@@ -12,6 +14,7 @@ services:
       CLIENT_PORT: "${CLIENT_PORT}"
   client:
     image: chat-client:0.0.1
+    container_name: client-chatApp
     ports: 
       - 8080:80
     working_dir: /client
