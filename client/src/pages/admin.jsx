@@ -38,7 +38,6 @@ export default function Admin(){
     const [updateValue, setUpdate] = useState(false);
     const [deleteValue, setDelete] = useState(false);
 
-
     const [openDeleteDialog, setDeleteDialog] = useState(false);
 
     const [openChangeDialog, setChangeDialog] = useState(false);
@@ -125,9 +124,7 @@ export default function Admin(){
                     setError(false)
                 }, 5000)
             }
-        }
-
-        
+        }        
     }
 
 
@@ -142,7 +139,7 @@ export default function Admin(){
         }
         getRooms();
 
-    },[groups, updateValue]);
+    },[updateValue, deleteValue, success]);
 
 
     const updateRoom = async (e) =>{  
@@ -204,12 +201,12 @@ export default function Admin(){
             <Container component="main" maxWidth="xs"
             sx={{
                 position: 'center',
-                mr: '750px',
+                mr: '38vw',
                 whidth: 20
             }}
             >
                 
-                <Box component="form" noValidate
+                <Box noValidate
                     sx={{
                         mt: 4,
                         mb: 1,
@@ -222,7 +219,7 @@ export default function Admin(){
                             sm: 600,
                             md: 800,
                             lg: 800,
-                            xl: 800 
+                            xl: 800, 
                           },  
                         position: 'center',
                         display: 'block',
@@ -244,7 +241,7 @@ export default function Admin(){
                     </div>
                     
 
-                    <Box component="form" noValidate 
+                    <Box noValidate 
                         sx={{
                             border: 1,
                             mt: 8,
@@ -262,7 +259,7 @@ export default function Admin(){
                             Novo Grupo
                         </Typography>                
 
-                        <TextField label="Nome" fullWidth margin="normal" name="room" id={roomName} value={roomName.room || ""} autocomplete="off" placeholder='Digite o nome do novo grupo' onChange={(e)=>handleChange(e)}/>
+                        <TextField label="Nome" fullWidth margin="normal" name="room" id={roomName.room} value={roomName.room || ""} autoComplete="off" placeholder='Digite o nome do novo grupo' onChange={(e)=>handleChange(e)}/>
                         <Button sx={{ mt: 3, mb: 2 }} variant="contained" type="submit" onClick={(e)=>{e.preventDefault(); postRooms(roomName.room)}}>Salvar</Button>
                         {(success) && <div><Alert severity="success">Grupo cadastrado com sucesso!</Alert></div>} 
                     
@@ -296,7 +293,7 @@ export default function Admin(){
                                     fullWidth
                                     variant="standard"
                                     name="updateName" 
-                                    id={updateName} 
+                                    id={updateName.updateName} 
                                     value={updateName.updateName || ""}
                                     onChange={(e)=>UpdateName(e)}
                                 />
@@ -318,6 +315,7 @@ export default function Admin(){
                                 <DialogTitle id="alert-dialog-title">
                                 {`Excluir ${deleteName}?`}
                                 </DialogTitle>
+
                                 <DialogContent>
                                 <DialogContentText id="alert-dialog-description">
                                     Esta ação excluirá todo o histórico de mensagens deste grupo.
@@ -356,8 +354,8 @@ export default function Admin(){
                         {updateValue && <Alert severity="success">Grupo atualizado com sucesso!</Alert>}
                         {(getError && !groups)  && <Alert severity="error">Não foi possível carregar os grupos.</Alert>}
                         {(groups.length > 0 || groups !== undefined) ? groups.map(({ room }, index) => (
-                            <div>
-                                <Button key={index} value={room} sx={{ mt: 3, mb: 2 }} variant="outlined" size="large" type="submit" onClick={(e)=>{e.preventDefault(); handleClick(e); DeleteName(room); setPrevName(room)}} >{room}</Button>
+                            <div key={room.toString()}>
+                                <Button value={room} sx={{ mt: 3, mb: 2 }} variant="outlined" size="large" type="submit" onClick={(e)=>{e.preventDefault(); handleClick(e); DeleteName(room); setPrevName(room)}} >{room}</Button>
                             </div>
                         )): <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', height: '200px' }}>  <CircularProgress />  </Box>}                                       
                         

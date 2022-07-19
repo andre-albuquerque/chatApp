@@ -11,8 +11,8 @@ const chatController = require('../controllers/chatController');
 
 router.post('/saveChat', jsonParser, checkAuth, chatController.saveChat);
 
-router.post('/getChat', jsonParser, checkAuth, chatController.getChat);
+router.get('/getChat', jsonParser, checkAuth, chatController.getChat);
 
-router.post('/getRecentChat', jsonParser, checkAuth, chatController.getRecentChat)
+router.get('/getRecentChat', jsonParser, checkAuth, chatController.getRecentChat)
 
 module.exports = router;

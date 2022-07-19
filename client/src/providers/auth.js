@@ -55,19 +55,20 @@ export const AuthProvider = ({children}) => {
         if (token) { 
             setAuthenticated(true)
             Api.defaults.headers.Authorization = `Bearer ${token}`;
-            navigate("/chat")
-        }
 
-        if (username) {
-            setUser({"username": username})
-        
-        }
-
-        if (admin) {
-            if (admin === 'true') {
-                setAdmin(true)
+            if (username) {
+                setUser({"username": username})        
             }
-        }     
+    
+            if (admin) {
+                if (admin === 'true') {
+                    setAdmin(true)
+                }
+            }   
+
+            navigate('/chat')
+        }
+ 
         
     }, [cookies, userCookies]);
 

@@ -35,7 +35,7 @@
     align-items: baseline;
 }
 
-#roomName {
+.roomName {
     font-size: 17px;
 }
 

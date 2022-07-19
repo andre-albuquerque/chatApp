@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Box, Container, Typography, TextField, Button, Alert  } from '@mui/material';
 import {ReactComponent as ReactLogo} from '../components/logo/logo.svg';
 
+import { Offline } from "react-detect-offline";
 
 import { AuthContext } from '../providers/auth';
 
@@ -15,7 +16,7 @@ export default function Home(){
             <div className="body--admin">
                 <Container component="main" maxWidth="xs" 
                     sx={{position: 'center',
-                    mr: '800px',
+                    mr: '42vw',
                     whidth: 20,
                     }}>
                     <Box         
@@ -31,11 +32,11 @@ export default function Home(){
                             paddingTop: "80px",
                             height: 'auto',
                             width: {
-                                xs: 300,
-                                sm: 400,
-                                md: 800,
-                                lg: 800,
-                                xl: 800 
+                                xs: 200,
+                                sm: 300,
+                                md: 400,
+                                lg: 400,
+                                xl: 780 
                             },  
                             position: 'center',
                             display: 'block',
@@ -64,6 +65,7 @@ export default function Home(){
 
                         {(hasError) && <div><Alert severity="error">Email ou senha inválidos!</Alert></div>}
                         {(serverError) && <div><Alert severity="error">Erro de conexão com o servidor. Tente novamente mais tarde.</Alert></div>}
+                        <Offline><div><Alert severity="error">Parece que você está desconectado da internet. Verique e tente novamente..</Alert></div></Offline>
 
                         <Link to='/signup'>Crie uma conta</Link>
                     </Box>

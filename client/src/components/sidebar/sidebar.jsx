@@ -1,4 +1,4 @@
-import React, {createContext, useEffect, useState, useRef} from "react";
+import React, {createContext, useEffect, useState, useRef, useCallback} from "react";
 
 import Api from '../../api/api';
 import io from 'socket.io-client';
@@ -20,8 +20,6 @@ const Sidebar = () => {
         
     const [roomName, setRoomName] = useState([]);
     
-    const [error, setError] = useState(false);
-
     const [room, setRoom] = useState()
 
     const [messages, setMessages] = useState([]);
@@ -34,7 +32,9 @@ const Sidebar = () => {
 
 
     useEffect(() => {
-        socketRef.current = io.connect("http://localhost:8081")
+        const port = process.env.REACT_APP_PORT || 8081
+
+        socketRef.current = io.connect(`http://localhost:${port}`)
         socketRef.current.on("NewMessage", () => {
             setNewMessage(true)  
         })        
@@ -45,35 +45,36 @@ const Sidebar = () => {
         async function getRooms (){
             try {
                 await Api.get('/rooms/rooms').then(
-                    response=>{setRoomName(response.data.rooms)})
-                    
+                    response=>{setRoomName(response.data.rooms)}
+                )                    
             } catch (error) {
-                setError(true)
+                console.log(error)
             }
         }
         getRooms()        
 
     }, [room]);
 
+    
 
-    let messagesResponse=[]
+    const getChat = useCallback(async () =>{
 
-    const getChat = async () =>{
+        let messagesResponse=[]
 
         try {
             for (let i=0; i < roomName.length; i++){
-                await Api.post('chat/getRecentChat', {
-                    group: roomName[i].room
-                }).then( response => { 
-                    if (response) {
-                    let messageChat = response.data.chatMessages
-
-                    if (messageChat.length > 0) {
-                        messagesResponse.push({messageChat})
-                    }                                         
-                   
-                }})
-                
+                if(roomName[i].room !== undefined){
+                    await Api.get(`chat/getRecentChat/?group=${roomName[i].room}`).then( response => { 
+                        if (response) {
+    
+                            let messageChat = response.data.chatMessages
+    
+                            if (messageChat.length > 0) {
+                                messagesResponse.push({messageChat})
+                            }                                         
+                        }
+                    })
+                }                
             }            
         } catch (error) {
             console.log(error)
@@ -81,7 +82,7 @@ const Sidebar = () => {
 
         setMessages([messagesResponse])  
                      
-    };         
+    }, [roomName]);         
   
     
     useEffect(()=>{
@@ -90,19 +91,22 @@ const Sidebar = () => {
         
         setNewMessage(false);
 
-    },[roomName, room, newMessage])    
+    },[roomName, room, newMessage, getChat])    
     
 
     const HandleRoom = (e, i) =>{                     
         setRoom(e)
         setKey(i)
 
-        document.getElementById(`${i}`).style.backgroundColor = "#ebebeb"
+        document.addEventListener("DOMContentLoaded", function () {
 
-        if (i !== key ) {
-            document.getElementById(`${key}`).style.backgroundColor = "white"
             document.getElementById(`${i}`).style.backgroundColor = "#ebebeb"
-        }
+
+            if (i !== key ) {
+                document.getElementById(`${key}`).style.backgroundColor = "white"
+                document.getElementById(`${i}`).style.backgroundColor = "#ebebeb"
+            }
+        })
     }
     
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -110,22 +114,22 @@ const Sidebar = () => {
     return (
         <>       
             <div className="sidebar">
-                {(roomName.length > 0 || roomName !== undefined) ? roomName.map(( { room }, key) => (                    
-                    <div id={key} className="sidebarChat"> 
+                {(roomName.length > 0 || roomName !== undefined) ? roomName.map(( { room }, key ) => (                    
+                    <div key={room.toString()} id={key} className="sidebarChat"> 
                         <GroupIcon />  
                         
                         <div className="sidebarChat--info" onClick={() => HandleRoom(room, key)} >             
-                        <div id="roomName">{ room }</div>
+                        <div className="roomName">{ room }</div>
 
                             {messages && messages[0].map((msg, index) => (
-                                <>
-                                <div className="room--time">  
+                                <div key={index.toString()}>
+                                <div className="room--time" >  
                                     {room === msg.messageChat[0].group && <div className="recentMessages">{msg.messageChat[0].name}: {msg.messageChat[0].message}</div>}
                                     <div id="time">                                    
                                         {room === msg.messageChat[0].group && <Moment format="DD/MM HH:mm">{(msg.messageChat[0].time).toLocaleString('pt-BR', { timeZone: {timezone} })}</Moment>}
                                     </div>
                                 </div>  
-                                </>
+                                </div>
                             ))} 
 
                         </div>  
@@ -133,7 +137,7 @@ const Sidebar = () => {
                         <Divider />                                              
                     </div>                    
                                     
-                )) :   <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', height: '200px' }}>  <CircularProgress />  </Box>}
+                )) : <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', height: '200px' }}>  <CircularProgress />  </Box>}
 
             </div>
 

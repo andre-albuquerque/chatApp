@@ -24,6 +24,8 @@ header {
     margin-top: 10px;
     margin-bottom: 10px;
     flex-shrink: 3;
+    color: #ffffff;
+    text-decoration-line: none;
 }
 
 @media(max-width: 800px) {

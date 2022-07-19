@@ -22,13 +22,17 @@ module.exports = {
 
     async getChat (req, res) {
 
-        try {            
-            const chatMessages = await Chat.find({group: req.body.group})
-            if (!chatMessages){
-                res.status(409).json({message: 'Mensagens não encontradas.'})
-            }
-            
-            res.status(201).json({chatMessages: chatMessages})
+        try {          
+           
+            let group = req.query.group
+        
+            const chatMessages = await Chat.find({group: group})
+
+            if (!chatMessages || (chatMessages.length === 0)) {
+                res.status(404).json({message: 'Mensagens não encontradas.'})
+            }else{
+                res.status(200).json({chatMessages: chatMessages})
+            }         
 
         } catch (error) {
             res.status(500).json({error: error})
@@ -38,24 +42,30 @@ module.exports = {
     async getRecentChat (req, res) {
 
         try {
+
+            let group = req.query.group
+
             const chatMessages = await Chat.aggregate([
                 {
-                  '$match': {
-                    'group': req.body.group
-                  }
+                '$match': {
+                    'group': group
+                }
                 }, {
-                  '$sort': {
+                '$sort': {
                     'time': -1
-                  }
+                }
                 }, {
-                  '$limit': 1
+                '$limit': 1
                 }
             ])
-            if (!chatMessages){
-                res.status(409).json({message: 'Mensagens não encontradas.'})
-            }
-            
-            res.status(201).json({chatMessages: chatMessages})
+
+            if (!chatMessages || (chatMessages.length === 0)) {
+                res.status(404).json({message: 'Mensagens não encontradas.'})
+            }else{                   
+                res.status(200).json({chatMessages: chatMessages})
+            }              
+                   
+  
         } catch (error) {
             res.status(500).json({error: error})
         }

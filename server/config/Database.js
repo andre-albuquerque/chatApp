@@ -11,8 +11,9 @@ function connectDatabase() {
     );
 
     const db = mongoose.connection;
-    db.on('error', (error)=> console.log(error));
-    db.once('open', ()=>console.log('Connected to the database.'))
+    db.on('error', (error) => console.error(error));
+    db.once('open', () => console.info('Connected to the database.'));
+    db.on('reconnected', () => {console.info('Reconnected to the database.')});
 };
 
 module.exports = connectDatabase;

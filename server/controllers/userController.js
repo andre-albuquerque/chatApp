@@ -60,10 +60,11 @@ module.exports = {
     async login (req, res, next) {
         try {
             const user = await User.findOne({email: req.body.email})
+            
             if (!user) {                    
                 return res.status(401).json({message: 'Falha na autenticação 1'})
             }
-            console.log(user.username)
+
             bcrypt.compare(req.body.password, user.password, (err, success)=>{
                 if (err) {
                     return res.status(401).json({message: 'Falha na autenticação 2'})

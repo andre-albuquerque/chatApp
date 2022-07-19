@@ -83,7 +83,7 @@ export default function SignUp() {
             whidth: 20,
             minWhidth: '200px'
         }}>
-          <Box component="form" onSubmit={handleSubmit} noValidate
+          <Box component="div" onSubmit={handleSubmit} noValidate
             sx={{              
               mr: 9,
               padding: 10,

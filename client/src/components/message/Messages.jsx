@@ -47,15 +47,11 @@ export default function Messages() {
 
     const [sended, setSended] = useState(false);
 
-    const [error, setError] = useState(false);
-
     const [open, setOpen] = useState(false);
 
     let navigate = useNavigate();
 
-    const socketRef = useRef();
-
-    let active = true;
+    const socketRef = useRef();    
 
 
     useEffect(()=>{
@@ -64,54 +60,61 @@ export default function Messages() {
             setChat([]);
             setMessages([]);
         }
-    }, [room]) 
+    }, [room, navigate]) 
 
     const [userTyping, setUserTyping] = useState("")
 
+
     useEffect(() => {
-			socketRef.current = io.connect("http://localhost:8081")
-			socketRef.current.on("message", ({ username, message, time }) => {
-				setChat([...chat, { username, message, time } ])
-			})
 
-            socketRef.current.emit('joinroom', room);      
+        const port = process.env.REACT_APP_PORT || 8081
+
+        socketRef.current = io.connect(`http://localhost:${port}`)
+        socketRef.current.on("message", ({ username, message, time }) => {
+            setChat([...chat, { username, message, time } ])
+        })
+
+        socketRef.current.emit('joinroom', room);      
+        
+        socketRef.current.on("typing", (username, roomUser)=>{
             
-            socketRef.current.on("typing", (username, roomUser)=>{
-                
-                if (roomUser === room){
-                    setUserTyping(username);
-                }
-                setTimeout(()=>{
-                    setUserTyping("")
-                }, 4000)
-            })
-                               
-            return () => socketRef.current.disconnect()
+            if (roomUser === room){
+                setUserTyping(username);
+            }
+            setTimeout(()=>{
+                setUserTyping("")
+            }, 4000)
+        })
+                            
+        return () => socketRef.current.disconnect()
 
-		},[chat, room, username]
-    )
+    },[chat, room, username])
 
     useEffect(() => {
             if (state.message.length > 0) {
                 socketRef.current.emit("typing", username, room)
             }
-        },[state]
+        },[state, username, room]
     );
 
     useEffect(()=>{
-        const getChat = async () =>{
-            try {
-                await Api.post('chat/getChat', {
-                    group: room
-                }).then( response => { if (active) {
-                    const messageChat = response.data.chatMessages 
-                    setMessages(messageChat)
-                }
-                })
 
-            } catch (error) {
-                console.log(error)
+        let active = true;
+
+        const getChat = async () =>{
+            if (room !== undefined) {
+                try {
+                    await Api.get(`chat/getChat/?group=${room}`).then( response => { if (active) {
+                        const messageChat = response.data.chatMessages 
+                        setMessages(messageChat)
+                        }
+                    })
+    
+                } catch (error) {
+                    console.log(error)
+                }
             }
+
         }
 
         getChat();
@@ -128,11 +131,9 @@ export default function Messages() {
     useEffect(()=> {
         if (chat.length > 0) {
             setUniquesUsers(chat.map(({username}) => username).filter((value, index, self) => self.indexOf(value) === index))
-            console.log(chat)
         }
         if (messages.length > 0) {
             setUniquesUsers(messages.map(({name}) => name).filter((value, index, self) => self.indexOf(value) === index))
-            console.log(messages)
         }
         else {
             setUniquesUsers([])
@@ -163,7 +164,7 @@ export default function Messages() {
                 })
 
             } catch (error) {
-                setError(true)
+                console.log(error)
             }
             
         setState({message: ""})
@@ -187,13 +188,13 @@ export default function Messages() {
                 {uniquesUsers !== '' && <DialogContentText >{uniquesUsers.length} participantes</DialogContentText>}
                 <Divider variant="middle"/>         
                 <List sx={{ pt: 0 }}>
-                    {uniquesUsers.map((item, key)=>(
-                        <>
-                        <ListItem key={item}> 
+                    {uniquesUsers.map((item)=>(
+                        <div key={item.toString()}>
+                        <ListItem > 
                             <Avatar src={`https://robohash.org/${Math.random()*1000}`} />                               
                             <ListItemText className="userParticipant" primary={item} />
                         </ListItem>
-                        </>
+                        </div>
                     ))}
                 </List>
             </Dialog>
@@ -211,7 +212,7 @@ export default function Messages() {
                         
                         {userTyping ? <div className="userTyping">{userTyping} está digitando...</div> : <div className="usersGroup" onClick={handleClickOpen}>
                             {uniquesUsers.map((item)=>{
-                                return <div className="username">{item}</div>}                                
+                                return <div className="username" key={item.toString()}>{item}</div>}                                
                             )}
                             </div>
                         }
@@ -224,8 +225,8 @@ export default function Messages() {
 
                 <div className="chat_body">
                     <ScrollableFeed>  
-                        {messages !== undefined && messages.map(({ message, name, time }) => (
-                            <div className="message-time">
+                        {messages !== undefined && messages.map(({ message, name, time }, index) => (
+                            <div className="message-time" key={index.toString()}>
                                 <p className={`chat_message ${name === user.username && 'chat_reciever'}`}>
                                     <span className="chat_name">{name}</span>
                                     <span className="message">{message}</span>                                
@@ -235,8 +236,8 @@ export default function Messages() {
                         )) }
 
 
-                        {chat !== undefined && chat.map(({ message, username, time }) => (
-                            <div className="message-time">
+                        {chat !== undefined && chat.map(({ message, username, time }, index) => (
+                            <div className="message-time"  key={index.toString()}>
                                 <p className={`chat_message ${username === user.username && 'chat_reciever'}`}>
                                     <span className="chat_name">{username}</span>
                                     <span className="message">{message}</span>                                
@@ -254,12 +255,12 @@ export default function Messages() {
                             placeholder="Mensagem" 
                             name='message' 
                             type="text" 
-                            autocomplete="off"
+                            autoComplete="off"
                             value={state.message} 
                             onChange={({ target: { value } }) => setState({message: value})}
                             onKeyPress={event => event.key === 'Enter' ? onMessageSubmit(event) : null}
                         />
-                        <SendIcon type="submit" form="chatForm" fontsize="large" onClick={(event)=>onMessageSubmit(event)}/>
+                        <SendIcon type="submit" form="chatForm" fontSize="large" onClick={(event)=>onMessageSubmit(event)}/>
                     </form>
                 </div>
 
