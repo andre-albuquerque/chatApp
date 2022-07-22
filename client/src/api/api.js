@@ -9,7 +9,9 @@ let axiosConfig = {
 
 const port = process.env.REACT_APP_PORT || 8081
 
+const host = '0.0.0.0';
+
 export default axios.create({
-  baseURL: `http://localhost:${port}`,
+  baseURL: `${host}:${port}`,
   headers: axiosConfig.headers
 });
