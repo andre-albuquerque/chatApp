@@ -1,9 +1,11 @@
-import React, { createContext, useEffect, useState} from 'react';
-import Cookies from 'js-cookie'
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from "react-router-dom";
 
-import Api from '../api/api'
+import Api from '../api/api';
+
+import { SocketContext } from "../providers/socket";
 
 import loginValidate from '../components/loginValidation';
 
@@ -28,8 +30,9 @@ export const AuthProvider = ({children}) => {
     const [cookies] = useCookies(['token']);
 
     const [userCookies] = useCookies(['user', 'admin']);
-    
-        
+
+    const { setDisconnect } = useContext(SocketContext);
+       
     const [values, setValues] = useState({
         email: '',
         username: '',
@@ -89,7 +92,7 @@ export const AuthProvider = ({children}) => {
         }  
 
         try {               
-            
+
             const login = await Api.post('/users/login', {
                 email: values.email,
                 password: values.password,               
@@ -124,6 +127,7 @@ export const AuthProvider = ({children}) => {
     };
 
     function handleLogout() {
+        setDisconnect(true)
         setAuthenticated(false)
         Cookies.remove("token")
         Cookies.remove("user")

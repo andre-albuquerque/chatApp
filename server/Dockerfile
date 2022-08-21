@@ -12,6 +12,6 @@ EXPOSE 8081
 
 COPY . .
 
-CMD ["npm", "start", "--host", "0.0.0.0"]
+RUN npm install pm2 --location=global --unsafe-perm=true --allow-root
 
-RUN npm install pm2 -g
+CMD ["npm", "start"]

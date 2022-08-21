@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { Box, Container, Typography, TextField, Button, Alert  } from '@mui/material';
 import {ReactComponent as ReactLogo} from '../components/logo/logo.svg';
 
+import "./styles/Home.css"
+
 import { Offline } from "react-detect-offline";
 
 import { AuthContext } from '../providers/auth';
@@ -13,11 +15,16 @@ export default function Home(){
 
     return(    
         <div className="app--admin">
-            <div className="body--admin">
+            <div className="body--home">
                 <Container component="main" maxWidth="xs" 
-                    sx={{position: 'center',
-                    mr: '42vw',
-                    whidth: 20,
+                    sx={{
+                    position: 'center',
+                    width: {
+                        xs: '340px',
+                        sm: '500px',
+                        md: '450px',
+                        lg: '445px',
+                    },
                     }}>
                     <Box         
                         xs={1}                
@@ -28,15 +35,12 @@ export default function Home(){
                             mt: 1,
                             mb: 3,
                             mr: 9,
-                            padding: 20,
-                            paddingTop: "80px",
                             height: 'auto',
                             width: {
-                                xs: 200,
-                                sm: 300,
-                                md: 400,
-                                lg: 400,
-                                xl: 780 
+                                xs: '272px',
+                                sm: '395px',
+                                md: '398px',
+                                lg: '440px'
                             },  
                             position: 'center',
                             display: 'block',
@@ -46,7 +50,7 @@ export default function Home(){
                             zIndex: 'modal'
                         }}
                     >
-                        <ReactLogo width="100" height="200"/>
+                        <ReactLogo className="logo" width="100" height="200"/>
                         <Typography component="h1" variant="h3" sx={{marginBottom: "33px"}}>
                             ChatApp
                         </Typography>

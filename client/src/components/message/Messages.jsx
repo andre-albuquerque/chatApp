@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext, createContext, useRef } from "react";
+import React, { useState, useEffect, useContext, createContext } from "react";
 import { useNavigate } from "react-router-dom";
-import io from 'socket.io-client';
+
 import Api from '../../api/api';
 
 import "./Messages.css";
@@ -23,25 +23,24 @@ import Typography from '@mui/material/Typography';
 import { RoomContext } from "../sidebar/sidebar";
 import { AuthContext } from "../../providers/auth";
 
+import { SocketContext } from "../../providers/socket";
+
 import ScrollableFeed from 'react-scrollable-feed'
 
 import Moment from 'react-moment';
 import 'moment-timezone';
 
-
 export default function Messages() {    
 
     const { room }  = useContext(RoomContext);
 
-    const { user } = useContext(AuthContext)
+    const { user } = useContext(AuthContext);
  
     const [messages, setMessages] = useState([]);
 
-    let username = user.username
+    let username = user.username;
 
     const [uniquesUsers, setUniquesUsers] = useState([])
-
-    const [chat, setChat] = useState([]);
 
     const [state, setState] = useState({ message: "" });
 
@@ -51,48 +50,21 @@ export default function Messages() {
 
     let navigate = useNavigate();
 
-    const socketRef = useRef();    
-
+    const { userTyping, joinRoom, typingEmit, newMessageEmit, chat, setChat} = useContext(SocketContext);
 
     useEffect(()=>{
         if (room){ 
             navigate('/chat');
             setChat([]);
             setMessages([]);
+            joinRoom(room);
         }
     }, [room, navigate]) 
 
-    const [userTyping, setUserTyping] = useState("")
-
-
-    useEffect(() => {
-
-        const port = process.env.REACT_APP_PORT || 8081
-
-        socketRef.current = io.connect(`http://localhost:${port}`)
-        socketRef.current.on("message", ({ username, message, time }) => {
-            setChat([...chat, { username, message, time } ])
-        })
-
-        socketRef.current.emit('joinroom', room);      
-        
-        socketRef.current.on("typing", (username, roomUser)=>{
-            
-            if (roomUser === room){
-                setUserTyping(username);
-            }
-            setTimeout(()=>{
-                setUserTyping("")
-            }, 4000)
-        })
-                            
-        return () => socketRef.current.disconnect()
-
-    },[chat, room, username])
 
     useEffect(() => {
             if (state.message.length > 0) {
-                socketRef.current.emit("typing", username, room)
+                typingEmit(username, room)
             }
         },[state, username, room]
     );
@@ -104,7 +76,7 @@ export default function Messages() {
         const getChat = async () =>{
             if (room !== undefined) {
                 try {
-                    await Api.get(`chat/getChat/?group=${room}`).then( response => { if (active) {
+                    await Api.get(`/chat/getChat/?group=${room}`).then( response => { if (active) {
                         const messageChat = response.data.chatMessages 
                         setMessages(messageChat)
                         }
@@ -114,7 +86,6 @@ export default function Messages() {
                     console.log(error)
                 }
             }
-
         }
 
         getChat();
@@ -136,11 +107,10 @@ export default function Messages() {
             setUniquesUsers(messages.map(({name}) => name).filter((value, index, self) => self.indexOf(value) === index))
         }
         else {
-            setUniquesUsers([])
+            setUniquesUsers([]);
         }
 
     }, [chat, messages])
-
 
 
     const onMessageSubmit = async (e) => {
@@ -154,10 +124,11 @@ export default function Messages() {
         setSended(true);
  
         if (message.length !== 0) {          
-            socketRef.current.emit("message", { room, username, message, time })
+
+            newMessageEmit(room, username, message, time)
                         
             try {
-                await Api.post('chat/saveChat', {
+                await Api.post('/chat/saveChat', {
                     message: message,
                     name: username,
                     group: room
@@ -169,7 +140,7 @@ export default function Messages() {
             
         setState({message: ""})
         }
-	}
+    }
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -178,6 +149,12 @@ export default function Messages() {
     const handleClose = () => {
         setOpen(false);
     };
+
+    const handleKeyEvent = (event) => {
+        if(event.key === 'Enter'){
+            onMessageSubmit(event)
+        }
+    }
 
 
     const SimpleDialog = () => {            
@@ -210,7 +187,7 @@ export default function Messages() {
                     <div className="room_users">                                            
                         <div className="roomName">{room}</div>
                         
-                        {userTyping ? <div className="userTyping">{userTyping} está digitando...</div> : <div className="usersGroup" onClick={handleClickOpen}>
+                        {(userTyping.length > 0) && (userTyping[0].roomName === room) ? <div className="userTyping">{userTyping[0].roomUser} está digitando...</div> : <div className="usersGroup" onClick={handleClickOpen}>
                             {uniquesUsers.map((item)=>{
                                 return <div className="username" key={item.toString()}>{item}</div>}                                
                             )}
@@ -224,7 +201,7 @@ export default function Messages() {
                 </div>
 
                 <div className="chat_body">
-                    <ScrollableFeed>  
+                    <ScrollableFeed>
                         {messages !== undefined && messages.map(({ message, name, time }, index) => (
                             <div className="message-time" key={index.toString()}>
                                 <p className={`chat_message ${name === user.username && 'chat_reciever'}`}>
@@ -234,7 +211,6 @@ export default function Messages() {
                                 <span className={`chat_timestamp---reciever ${name === username && 'chat_timestamp'}`}>{<Moment format="DD/MM HH:mm">{(time)}</Moment>}</span>
                             </div>
                         )) }
-
 
                         {chat !== undefined && chat.map(({ message, username, time }, index) => (
                             <div className="message-time"  key={index.toString()}>
@@ -258,7 +234,7 @@ export default function Messages() {
                             autoComplete="off"
                             value={state.message} 
                             onChange={({ target: { value } }) => setState({message: value})}
-                            onKeyPress={event => event.key === 'Enter' ? onMessageSubmit(event) : null}
+                            onKeyPress={handleKeyEvent}
                         />
                         <SendIcon type="submit" form="chatForm" fontSize="large" onClick={(event)=>onMessageSubmit(event)}/>
                     </form>
