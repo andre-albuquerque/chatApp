@@ -1,6 +1,6 @@
 header {
     height: 70px;
-    min-width: 745px;
+    min-width: 588px;
     display: flex;
     color: #ffffff;
     background-color: #004980;
@@ -13,11 +13,6 @@ header {
     align-items: center;
 }
 
-@media(max-width: 800px) {
-    .container {
-     font-size: 14px;
-    }
-   }
 
 .item {
     margin-left: 45px;
@@ -28,11 +23,6 @@ header {
     text-decoration-line: none;
 }
 
-@media(max-width: 800px) {
-    .item {
-        margin-left: 0px;
-    }
-}
 
 .item#name {
     margin-left: 5px;
@@ -42,21 +32,6 @@ header {
     margin-left: 5px;
     cursor: pointer;
 }
-
-@media(max-width: 800px) {
-    .item#admin  {
-        margin-left: 0px;
-    };
-    
-}
-
-@media(max-width: 800px) {
-    .item#name  {
-        margin-left: 0px;
-        margin-right: 20px
-    };
-}
-
 
 
 .item#adminicon {
@@ -73,11 +48,6 @@ header {
     cursor: pointer;
 }
 
-@media(max-width: 800px) {
-    #text {
-     font-size: 14px;
-    }
-   }
 
 .logout {
     margin-top: 10px;
@@ -88,10 +58,33 @@ header {
 }
 
 @media(max-width: 800px) {
+    
     .logout  {
         margin-right: 0px;
         margin-left: 3px;
     }
-   }
+
+    #text {
+        font-size: 14px;
+    }
+
+    .item#name  {
+        margin-left: 0px;
+        margin-right: 20px
+    }
+
+    .item#admin  {
+        margin-left: 0px;
+    }
+
+    .item {
+        margin-left: 0px;
+    }
+
+    .container {
+        font-size: 14px;
+    }
+}
+
 
 

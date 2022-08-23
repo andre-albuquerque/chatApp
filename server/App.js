@@ -23,27 +23,16 @@ httpServer.listen(port, ()=>{
 
 const clienthost = process.env.CLIENT_HOST;
 
-const io = require("socket.io")(httpServer,      {
+const io = require("socket.io")(httpServer, {
     cors:{
         origin: clienthost,
         credentials: true,
-        methods: ["GET", "POST"]
-    }
+        methods: ["GET", "POST"],
+        pingInterval: 10000,
+        pingTimeout: 5000
+    },
+    allowEIO3: true   // comment this line when local server. This option is required to get properly working on Heroku only
 });
-
-/*
-
-const io = require("socket.io")(httpServer, {
-     cors:{
-	   origin: clienthost,
-       credentials: true,
- 	   methods: ["GET", "POST"],
-  	   pingInterval: 10000,
-	   pingTimeout: 5000
-     },
-     allowEIO3: true
-});
-*/
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -85,7 +74,6 @@ io.on('connection', (socket) => {
     })
 
     socket.on('typing', (username, room)=>{
-        console.log(username)
         socket.broadcast.emit("typing", username, room)
     })
 

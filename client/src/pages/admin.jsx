@@ -202,6 +202,7 @@ export default function Admin(){
             sx={{
                 position: 'center',
                 heigth: {
+                    ml:'500px',
                     xl:'500px'
                 },
                 width: {
@@ -214,7 +215,6 @@ export default function Admin(){
                     sx={{
                         mt: 4,
                         mb: 1,
-                        mr: 9,
                         height: 'auto', 
                         position: 'center',
                         display: 'block',

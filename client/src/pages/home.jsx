@@ -30,6 +30,7 @@ export default function Home(){
                         xs={1}                
                         component="form" 
                         onSubmit={handleLogin} 
+                        className="MuiBox-root--home"
                         noValidate  
                         sx={{
                             mt: 1,

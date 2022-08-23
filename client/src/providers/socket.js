@@ -4,7 +4,7 @@ import io from "socket.io-client";
 
 export const SocketContext = createContext();
 
-const backend = process.env.REACT_APP_SOCKET || 'http://localhost:8081';
+const backend = process.env.REACT_APP_SOCKET;
 
 const socket = io(backend, {
     withCredentials: true
@@ -31,7 +31,6 @@ export const SocketProvider = ({children}) => {
                 setNewMessageReceived(true);
             })
         };
-
         newMessageRecived();
     });
 

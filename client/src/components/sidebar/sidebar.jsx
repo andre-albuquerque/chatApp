@@ -25,7 +25,7 @@ const Sidebar = () => {
 
     const [messages, setMessages] = useState([]);
 
-    const [key, setKey] = useState('');
+    const [selected, setSelected] = useState('');
 
     const { newMessageReceived, setNewMessageReceived } = useContext(SocketContext);
     
@@ -78,32 +78,23 @@ const Sidebar = () => {
 
         getChat();
         
-    },[newMessageReceived, room, roomName])    
-    
+    },[newMessageReceived, room, roomName])  
 
+        
     const HandleRoom = (e, i) =>{                     
-        setRoom(e)
-        setKey(i)
-
-        document.addEventListener("DOMContentLoaded", function () {
-
-            document.getElementById(`${i}`).style.backgroundColor = "#ebebeb"
-
-            if (i !== key ) {
-                document.getElementById(`${key}`).style.backgroundColor = "white"
-                document.getElementById(`${i}`).style.backgroundColor = "#ebebeb"
-            }
-        })
+        setRoom(e);
+        setSelected(i);
     }
-    
+
+  
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     return (
         <>       
             <div className="sidebar">
                 {(roomName.length > 0 || roomName !== undefined) ? roomName.map(( { room }, key ) => (                    
-                    <div key={room.toString()} id={key} className="sidebarChat"> 
-                        <GroupIcon />  
+                    <div key={room.toString()} id={key} className={selected === key ?  "sidebarChat--changeColor":"sidebarChat"}> 
+                        <GroupIcon id="groupIcon"/>  
                         
                         <div className="sidebarChat--info" onClick={() => HandleRoom(room, key)} >  
 

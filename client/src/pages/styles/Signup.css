@@ -1,4 +1,4 @@
-.MuiBox-root {
+#MuiBox-root {
     max-width: none;
 }
 
@@ -13,7 +13,7 @@
 
 
 @media only screen and (max-width: 600px) {
-    .MuiBox-root {
+    #MuiBox-root {
         min-width: 307px;
     }
 
@@ -30,8 +30,8 @@
 }
 
 @media only screen and (min-width:601px) and (max-width: 767px) {
-    .MuiBox-root {
-        max-width: 380px;
+    #MuiBox-root {
+        max-width: 381px;
     }
 
     .body--signup {
@@ -47,7 +47,7 @@
 
 
 @media only screen and (min-width: 768px) and (max-width: 992px) {
-    .MuiBox-root {
+    #MuiBox-root {
         max-width: 453px;
     }
 
@@ -62,7 +62,7 @@
 }
 
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
-    .MuiBox-root {
+    #MuiBox-root {
         max-width: 400px;
     }
 
@@ -73,13 +73,13 @@
 
 
 @media only screen and (min-width: 1200px) {
-    .MuiBox-root {
+    #Muibox-root--signup {
         max-width: 400px;
-        max-height: 500px;
+        max-height: 950px;
     }
 
     .body--signup {
         max-width: 500px;
     }
-
 }
+

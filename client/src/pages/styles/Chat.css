@@ -21,15 +21,14 @@
 
 .container--chat {
     display: flex;
-    height: 861px;
+}
+
+.chat--container {
+    flex: 0.7;
 }
 
 .app_body {
     background-color: #ededed;
-    height: 931px;
-    min-height: 95vh;
-    width: 1360px;
-    min-width: 550px;
     z-index: 1;
     box-shadow: -1px 4px 20px -6px rgba(0, 0, 0, 0.7);
 }
@@ -39,4 +38,170 @@
     flex-direction: row;
     height: 5vh;
     font-size: 25px;
+}
+
+@media only screen and (max-width: 600px) {
+
+    .app_body {
+        max-height: 725px;
+        max-width: 1290px;
+    }
+
+    .sidebar {
+        max-height: 580px;
+    }
+
+    .sidebarChat--info {
+        padding-left: 0px;
+    }
+
+    .room--time {
+        display: none;
+    }
+
+    .container--chat {
+        min-height: 633px;
+    }
+
+    .chat--container {
+        max-height: 755px;
+    }
+
+    #groupIcon {
+        display: none;
+    }
+
+}
+
+@media only screen and (min-width:601px) and (max-width: 767px) {
+
+    .app_body {
+        max-height: 574px;
+        max-width: 1290px;
+        margin-top: -86px;
+    }
+
+    .sidebar {
+        max-height: 504px;
+    }
+
+    .sidebarChat--info {
+        padding-left: 0px;
+    }
+
+    .container--chat {
+        min-height: 439px;
+        width: 604px;
+    }
+
+    .chat--container {
+        max-height: 755px;
+    }
+
+    #groupIcon {
+        display: none;
+    }
+
+    .header {
+        min-width: 600px;
+    }
+
+}
+
+
+@media only screen and (min-width: 768px) and (max-width: 992px) {
+
+    .app_body {
+        max-height: 574px;
+        max-width: 1290px;
+        margin-top: -56px;
+    }
+
+    .sidebar {
+        max-height: 504px;
+    }
+
+    .sidebarChat--info {
+        padding-left: 0px;
+    }
+
+    .container--chat {
+        min-height: 439px;
+        width: 768px;
+    }
+
+    .chat--container {
+        max-height: 755px;
+    }
+
+    #groupIcon {
+        display: none;
+    }
+
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+
+    .app_body {
+        max-height: 725px;
+        max-width: 1290px;
+        margin-top: -60px;
+    }
+
+    .sidebar {
+        max-height: 638px;
+    }
+
+    .container--chat {
+        min-height: 494px;
+    }
+
+    .chat--container {
+        max-height: 494px;
+    }
+
+}
+
+
+@media only screen and (min-width: 1200px) and (max-width: 1600px) {
+
+    .app_body {
+        max-height: 725px;
+        max-width: 1290px;
+    }
+
+    .sidebar {
+        max-height: 638px;
+    }
+
+    .container--chat {
+        min-height: 564px;
+        max-width: 941px;
+    }
+
+    .chat--container {
+        max-height: 755px;
+    }
+}
+
+
+@media only screen and (min-width: 1601px) {
+
+    .app_body {
+        max-height: 870px;
+        max-width: 1590px;
+        margin-top: -60px;
+    }
+
+    .sidebar {
+        max-height: 800px;
+    }
+
+    .container--chat {
+        min-height: 800px;
+    }
+
+    .chat--container {
+        max-height: 755px;
+    }
 }

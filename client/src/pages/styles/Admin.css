@@ -13,7 +13,7 @@
     justify-content: center;
     place-items: center;
     background-image: radial-gradient(white, rgb(200, 200, 200));
-    height: 100vh;
+    min-height: 100vh;
     width: 100vw;
 }
 
@@ -77,6 +77,10 @@
         min-width: 100vw;
         min-height: auto;
     }
+
+    .body--admin {
+        min-height: 500px;
+    }
 }
 
 
@@ -105,6 +109,5 @@
 
     .body--admin {
         max-width: 500px;
-        height: 600px;
     }
 }

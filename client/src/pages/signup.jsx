@@ -78,7 +78,7 @@ export default function SignUp() {
   
     <div className="app--admin">
       <div className="body--signup">
-        <Container component="main" maxWidth="xs"         
+        <Container component="main" maxWidth="xs" id="container--signup"       
           sx={{
             position: 'center',
             width: {
@@ -87,19 +87,20 @@ export default function SignUp() {
               md: '450px',
               lg: '445px',
             },
-            height: {
-              xs: '560px',
-              sm: '640px',
-              md: '700px',
-              lg: '700px'
+            maxHeight: {
+              xs: '826px',
+              sm: '900px',
+              md: '950px',
+              lg: '950px'
             }
         }}>
           <Box component="div" onSubmit={handleSubmit} noValidate
+            id="Muibox-root--signup"
             sx={{              
               height: 'auto',
               width: {
-                xs: '272px',
-                sm: '395px',
+                xs: '310px',
+                sm: '381px',
                 md: '398px',
                 lg: '440px'
               },            

@@ -58,6 +58,7 @@ export default function Messages() {
             setChat([]);
             setMessages([]);
             joinRoom(room);
+            setState({message: ""});
         }
     }, [room, navigate]) 
 
@@ -138,7 +139,7 @@ export default function Messages() {
                 console.log(error)
             }
             
-        setState({message: ""})
+            setState({message: ""})
         }
     }
 
@@ -250,7 +251,7 @@ export default function Messages() {
             {room ? renderChat() : <div className='chatlogo'>
                                         <ReactLogo id="chatLogo--chat" width="200" height="300"/> 
                                         <div>
-                                            <Typography variant="subtitle1" sx={{color: "rgb(142, 142, 142)"}}>Escolha um grupo para mandar mensagens</Typography>
+                                            <Typography variant="subtitle1" sx={{color: "rgb(142, 142, 142)", textAlign: 'center'}}>Escolha um grupo para mandar mensagens</Typography>
                                         </div>
                                     </div>}                                 
         </div>
