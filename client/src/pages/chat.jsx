@@ -11,7 +11,7 @@ import 'moment-timezone';
 export default function Chat(){
   
     return (
-        <div className="app">    
+        <div className="app--admin">    
             <div className="app_body">
                 <Header className="header">Header</Header>
                 <div className="container--chat">

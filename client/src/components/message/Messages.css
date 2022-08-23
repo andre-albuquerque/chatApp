@@ -30,14 +30,6 @@
     width: 50vw;
 }
 
-.chat--container {
-    height: 860px;
-    min-height: 450px;
-    min-width: 499px;
-    flex: 0.7
-}
-
-
 .chat_header {
     display: flex;
     flex-direction: row;
@@ -107,8 +99,8 @@
 
 .chat_body {
     flex: 1;
-    height: 743px;
     background-color: rgba(255,255,255,1.00);
+    overflow-y: hidden;
 }
 
 .styles_scrollable-div__prSCv{
@@ -149,9 +141,6 @@
 .chatlogo {
     display: flex;
     flex-direction: column;
-    height: 860px;
-    min-height: 450px;
-    min-width: 499px;
     flex: 0.7 1;
     align-items: center;
     justify-content: center;
@@ -213,14 +202,14 @@
 .message-time {
     display: flex;
     flex-direction: column;
-    margin-right: 9%;
+    margin-right: 7%;
     margin-bottom: 15px;
 }
 
 .message-time--reciever {
     display: flex;
     flex-direction: column;
-    margin-right: 9%;
+    margin-right: 7%;
     margin-bottom: 15px;
 }
 
@@ -265,4 +254,91 @@
 
 .sidebar--second {
     display: none;
+}
+
+@media only screen and (max-width: 600px) {
+
+    .chat_body {
+        height: 464px;
+        max-width: 902px;
+        padding-left: 1%;
+    }
+
+    .chatlogo {
+        height: 580px;
+        max-width: 390px;
+    }
+
+
+}
+
+@media only screen and (min-width:601px) and (max-width: 767px) {
+
+    .chat_body {
+        height: 387px;
+        max-width: 902px;
+        padding-left: 1%;
+    }
+
+    .chatlogo {
+        height: 504px;
+        max-width: 490px;
+    }
+
+}
+
+
+@media only screen and (min-width: 768px) and (max-width: 992px) {
+
+    .chat_body {
+        height: 387px;
+        max-width: 902px;
+        padding-left: 1%;
+    }
+
+    .chatlogo {
+        height: 504px;
+        max-width: 902px;
+    }
+
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+
+    .chat_body {
+        height: 377px;
+        max-width: 902px;
+        padding-left: 1%;
+    }
+
+    .chatlogo {
+        height: 494px;
+        max-width: 902px;
+    }
+}
+
+
+@media only screen and (min-width: 1200px) and (max-width: 1600px) {
+
+    .chat_body {
+        height: 468px;
+        max-width: 902px;
+    }
+
+    .chatlogo {
+        height: 595px;
+        max-width: 902px;
+    }
+}
+
+@media only screen and (min-width: 1601px) {
+    .chat_body {
+        height: 680px;
+        width: 1200px;
+    }
+
+    .chatlogo {
+        height: 800px;
+        width: 1200px;
+    }
 }

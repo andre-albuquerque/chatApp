@@ -3,8 +3,8 @@ dotenv.config({ path: ".env" });
 
 const express = require('express');
 const app = express();
-const server = require('http').createServer(app);
-const io = require('socket.io')(server, {cors: {origin: '*'}});
+
+const httpServer = require('http').createServer(app);
 
 const bodyParser = require('body-parser');
 
@@ -15,17 +15,33 @@ const rooms = require('./routes/Rooms');
 const connectDatabase = require('./config/Database');
 const cors = require('cors');
 
+const port = process.env.PORT || process.env.SERVER_PORT;
+
+httpServer.listen(port, ()=>{
+    console.info(`Server running on port ${port}`)
+});
+
+const clienthost = process.env.CLIENT_HOST;
+
+const io = require("socket.io")(httpServer, {
+    cors:{
+        origin: clienthost,
+        credentials: true,
+        methods: ["GET", "POST"],
+        pingInterval: 10000,
+        pingTimeout: 5000
+    },
+    allowEIO3: true   // comment this line when local server. This option is required to get properly working on Heroku only
+});
+
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
 
-const clientPort = process.env.CLIENT_PORT || 3000
-
-
 const corsOptions = {
-    origin: `http://localhost:${clientPort}`,
+    origin: clienthost,
     allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'X-Access-Token', 'Authorization'],
     credentials: true,
     methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
@@ -34,7 +50,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use((req, res, next)=>{
-    res.setHeader('Access-Control-Allow-Origin', `http://localhost:${clientPort}`);
+    res.setHeader('Access-Control-Allow-Origin', clienthost);
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');    
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');   
     res.setHeader('Access-Control-Allow-Credentials', true);    
@@ -43,11 +59,10 @@ app.use((req, res, next)=>{
 
 connectDatabase();
 
-
 let clients = [];
 
 io.on('connection', (socket) => {
-    clients.push(socket.id)
+    clients.push(socket.id)    
 
     socket.on('joinroom', (room) => {
         socket.join(room)
@@ -71,11 +86,5 @@ io.on('connection', (socket) => {
 app.use('/users', users);
 app.use('/rooms', rooms);
 app.use('/chat', chat);
-
-const port = process.env.PORT || 8081;
-
-server.listen(port, ()=>{
-    console.info(`Server running on port ${port}`)
-});
 
 module.exports = app;

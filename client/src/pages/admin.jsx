@@ -201,26 +201,21 @@ export default function Admin(){
             <Container component="main" maxWidth="xs"
             sx={{
                 position: 'center',
-                mr: '38vw',
-                whidth: 20
+                heigth: {
+                    ml:'500px',
+                    xl:'500px'
+                },
+                width: {
+                    xl: '800px'
+                }
+
             }}
-            >
-                
+            >                
                 <Box noValidate
                     sx={{
                         mt: 4,
                         mb: 1,
-                        mr: 9,
-                        padding: 10,
-                        paddingBottom: "20px",
-                        height: 'auto',
-                        width: {
-                            xs: 300,
-                            sm: 600,
-                            md: 800,
-                            lg: 800,
-                            xl: 800, 
-                          },  
+                        height: 'auto', 
                         position: 'center',
                         display: 'block',
                         flexDirection: 'column',

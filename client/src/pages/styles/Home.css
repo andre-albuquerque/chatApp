@@ -1,4 +1,74 @@
-.MuiBox-root {
-    width: 1360px;
-    min-width: 550px;
+.MuiBox-root--home {
+    max-width: none;
+}
+
+.body--home {
+    background-color: #ffffff;
+    z-index: 1;
+    box-shadow: -1px 4px 20px -6px rgb(0 0 0 / 70%);
+    display: flex;
+    flex-direction: row;
+    align-self: center;
+}
+
+
+@media only screen and (max-width: 600px) {
+    .MuiBox-root--home {
+        min-width: 307px;
+    }
+
+    .body--home {
+        min-width: 303px;
+    }
+
+    .logo {
+        height: 80px;
+        margin-bottom: 30px;
+    }
+
+}
+
+@media only screen and (min-width:601px) and (max-width: 767px) {
+    .MuiBox-root--home {
+        max-width: 380px;
+    }
+
+    .body--home {
+        max-width: 427px;
+    }
+
+}
+
+
+@media only screen and (min-width: 768px) and (max-width: 992px) {
+    .MuiBox-root--home {
+        max-width: 453px;
+    }
+
+    .body--home {
+        max-width: 501px;
+    }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+    .MuiBox-root--home {
+        max-width: 400px;
+    }
+
+    .body--home {
+        max-width: 501px;
+    }
+}
+
+
+@media only screen and (min-width: 1200px) {
+    .MuiBox-root--home {
+        max-width: 400px;
+        max-height: 800px;
+    }
+
+    .body--home {
+        max-width: 500px;
+        max-height: 800px;
+    }
 }

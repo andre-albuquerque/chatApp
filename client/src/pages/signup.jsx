@@ -6,6 +6,8 @@ import { Box, Container, Typography, TextField, Button, Alert  } from '@mui/mate
 
 import {ReactComponent as ReactLogo} from '../components/logo/logo.svg';
 
+import "./styles/Signup.css"
+
 export default function SignUp() {
 
   const [values, setValues] = useState({
@@ -46,7 +48,7 @@ export default function SignUp() {
     }    
 
     try {              
-      await Axios.post('http://localhost:8081/users/signup', {
+      await Axios.post('/users/signup', {
           email: values.email,
           username: values.username,
           password: values.password,
@@ -75,29 +77,33 @@ export default function SignUp() {
   return (
   
     <div className="app--admin">
-      <div className="body--admin">
-        <Container component="main" maxWidth="xs"         
+      <div className="body--signup">
+        <Container component="main" maxWidth="xs" id="container--signup"       
           sx={{
             position: 'center',
-            mr: '730px',
-            whidth: 20,
-            minWhidth: '200px'
+            width: {
+              xs: '340px',
+              sm: '500px',
+              md: '450px',
+              lg: '445px',
+            },
+            maxHeight: {
+              xs: '826px',
+              sm: '900px',
+              md: '950px',
+              lg: '950px'
+            }
         }}>
           <Box component="div" onSubmit={handleSubmit} noValidate
+            id="Muibox-root--signup"
             sx={{              
-              mr: 9,
-              padding: 10,
-              paddingTop: 3,
-              paddingBottom: 0,
               height: 'auto',
               width: {
-                xs: 400,
-                sm: 600,
-                md: 800,
-                lg: 800,
-                xl: 800 
-              },  
-              marginTop:'-32px',            
+                xs: '310px',
+                sm: '381px',
+                md: '398px',
+                lg: '440px'
+              },            
               position: 'center',
               display: 'block',
               flexDirection: 'column',
@@ -106,7 +112,7 @@ export default function SignUp() {
               zIndex: 'modal'
               }}
           >
-            <ReactLogo width="100" height="200"/>
+            <ReactLogo width="100" height="200" className="logo"/>
 
             <Typography component="h1" variant="h5">
               Crie uma conta

@@ -2,6 +2,8 @@ version: "3.9"
 
 services:
   server:
+    build:
+      dockerfile: ./server/Dockerfile
     image: chat-server:0.0.1
     container_name: server-chatApp
     restart: always
@@ -11,12 +13,16 @@ services:
     environment:
       DATABASE_URL: "${DATABASE_URL}"
       JWT_KEY: "${JWT_KEY}"
-      CLIENT_PORT: "${CLIENT_PORT}"
+      CLIENT_HOST: "${CLIENT_HOST}"
+      PORT: "${SERVER_PORT}"
   client:
+    build:
+      dockerfile: ./client/Dockerfile
     image: chat-client:0.0.1
     container_name: client-chatApp
     ports: 
       - 8080:80
     working_dir: /client
     environment:
-      REACT_APP_PORT: "${REACT_APP_PORT}"
+      REACT_APP_BACKEND: "${REACT_APP_BACKEND}"
+      PORT: "${PORT}"

@@ -9,20 +9,16 @@
 }
 
 .app--admin {
-    display: flex;
+    display: inline-flex;
     justify-content: center;
     place-items: center;
     background-image: radial-gradient(white, rgb(200, 200, 200));
-    height: 969px;
-    min-width: 745px;
+    min-height: 100vh;
+    width: 100vw;
 }
 
 .body--admin {
     background-color: #ffffff;
-    height: 931px;
-    min-height: 95vh;
-    width: 1360px;
-    min-width: 550px;
     z-index: 1;
     box-shadow: -1px 4px 20px -6px rgb(0 0 0 / 70%);
     overflow: auto;
@@ -43,4 +39,75 @@
     margin-top: 0px; 
     margin-left: 10px;
     margin-right: -10px;
+}
+
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (max-width: 600px) {
+    .app--admin {
+        max-width: 100vw;
+    }
+
+    .app--admin::after {
+        max-width: 100vw;
+        min-height: auto;
+    }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width:601px) and (max-width: 767px) {
+    .app--admin {
+        max-width: 100vw;
+
+    }
+
+    .app--admin::after {
+        max-width: 100vw;
+        min-height: auto;
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 768px) and (max-width: 992px) {
+    .app--admin {
+        min-width: 100vw;
+    }
+
+    .app--admin::after {
+        min-width: 100vw;
+        min-height: auto;
+    }
+
+    .body--admin {
+        min-height: 500px;
+    }
+}
+
+
+@media only screen and (min-width: 992px) and (max-width: 1200px) {
+    .app--admin {
+        min-width: 100vw;
+    }
+
+    .app--admin::after {
+        width: 100vw;
+        min-height: auto;
+    }
+}
+
+
+
+@media only screen and (min-width: 1200px) {
+    .app--admin {
+        min-width: 100vw;
+    }
+
+    .app--admin::after {
+        width: 100vw;
+        min-height: auto;
+    }
+
+    .body--admin {
+        max-width: 500px;
+    }
 }

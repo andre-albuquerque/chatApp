@@ -10,8 +10,9 @@ import Signup from './pages/signup';
 import Chat from './pages/chat';
 import NotFoundPage from './pages/notFound';
 
-
 import { AuthContext, AuthProvider } from './providers/auth';
+
+import { SocketProvider } from './providers/socket'
 
 function PrivateRoute({ children }) {
 
@@ -25,29 +26,31 @@ export default function App(){
 
   return (
     <Router>
-      <AuthProvider>
-        <div>
-          <Routes>
-            <Route path='/' exact element={<Home/>}/>
-            <Route path='/signup' element={<Signup/>}/>
-            <Route path="/admin"
-             element={
-              <PrivateRoute>
-                <Admin/>
-              </PrivateRoute>
-             }
-            />         
-            <Route path="/chat"
-             element={
-              <PrivateRoute>
-                <Chat/>
-              </PrivateRoute>
-             }
-            />
-            <Route path='/*' element={<NotFoundPage/>}/>
-          </Routes>
-        </div>
-      </AuthProvider>
+      <SocketProvider>
+        <AuthProvider>        
+          <div>
+            <Routes>
+              <Route path='/' exact element={<Home/>}/>
+              <Route path='/signup' element={<Signup/>}/>
+              <Route path="/admin"
+              element={
+                <PrivateRoute>
+                  <Admin/>
+                </PrivateRoute>
+              }
+              />         
+              <Route path="/chat"
+              element={
+                <PrivateRoute>
+                  <Chat/>
+                </PrivateRoute>
+              }
+              />
+              <Route path='/*' element={<NotFoundPage/>}/>
+            </Routes>
+          </div>        
+        </AuthProvider>
+      </SocketProvider>
     </Router>
   );
 }

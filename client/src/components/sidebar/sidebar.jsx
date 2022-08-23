@@ -1,7 +1,8 @@
-import React, {createContext, useEffect, useState, useRef, useCallback} from "react";
+import React, {createContext, useContext, useEffect, useState, useCallback} from "react";
 
 import Api from '../../api/api';
-import io from 'socket.io-client';
+
+import { SocketContext } from "../../providers/socket";
 
 import './Sidebar.css';
 
@@ -15,38 +16,26 @@ import Box from '@mui/material/Box';
 import Moment from 'react-moment';
 import 'moment-timezone';
 
+
 const Sidebar = () => {
-    
-        
+            
     const [roomName, setRoomName] = useState([]);
     
     const [room, setRoom] = useState()
 
     const [messages, setMessages] = useState([]);
 
-    const [newMessage, setNewMessage] = useState(false);
+    const [selected, setSelected] = useState('');
 
-    const [key, setKey] = useState('')
-
-    const socketRef = useRef();
-
-
-    useEffect(() => {
-        const port = process.env.REACT_APP_PORT || 8081
-
-        socketRef.current = io.connect(`http://localhost:${port}`)
-        socketRef.current.on("NewMessage", () => {
-            setNewMessage(true)  
-        })        
-    });
-
+    const { newMessageReceived, setNewMessageReceived } = useContext(SocketContext);
     
+
     useEffect(()=>{
         async function getRooms (){
             try {
                 await Api.get('/rooms/rooms').then(
                     response=>{setRoomName(response.data.rooms)}
-                )                    
+                )
             } catch (error) {
                 console.log(error)
             }
@@ -55,7 +44,6 @@ const Sidebar = () => {
 
     }, [room]);
 
-    
 
     const getChat = useCallback(async () =>{
 
@@ -64,9 +52,8 @@ const Sidebar = () => {
         try {
             for (let i=0; i < roomName.length; i++){
                 if(roomName[i].room !== undefined){
-                    await Api.get(`chat/getRecentChat/?group=${roomName[i].room}`).then( response => { 
-                        if (response) {
-    
+                    await Api.get(`/chat/getRecentChat/?group=${roomName[i].room}`).then( response => { 
+                        if (response) {    
                             let messageChat = response.data.chatMessages
     
                             if (messageChat.length > 0) {
@@ -80,45 +67,37 @@ const Sidebar = () => {
             console.log(error)
         }  
 
-        setMessages([messagesResponse])  
+        setMessages([messagesResponse]);
+
+        setNewMessageReceived(false);
                      
-    }, [roomName]);         
+    });         
   
     
     useEffect(()=>{
 
-        getChat();  
+        getChat();
         
-        setNewMessage(false);
+    },[newMessageReceived, room, roomName])  
 
-    },[roomName, room, newMessage, getChat])    
-    
-
+        
     const HandleRoom = (e, i) =>{                     
-        setRoom(e)
-        setKey(i)
-
-        document.addEventListener("DOMContentLoaded", function () {
-
-            document.getElementById(`${i}`).style.backgroundColor = "#ebebeb"
-
-            if (i !== key ) {
-                document.getElementById(`${key}`).style.backgroundColor = "white"
-                document.getElementById(`${i}`).style.backgroundColor = "#ebebeb"
-            }
-        })
+        setRoom(e);
+        setSelected(i);
     }
-    
+
+  
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     return (
         <>       
             <div className="sidebar">
                 {(roomName.length > 0 || roomName !== undefined) ? roomName.map(( { room }, key ) => (                    
-                    <div key={room.toString()} id={key} className="sidebarChat"> 
-                        <GroupIcon />  
+                    <div key={room.toString()} id={key} className={selected === key ?  "sidebarChat--changeColor":"sidebarChat"}> 
+                        <GroupIcon id="groupIcon"/>  
                         
-                        <div className="sidebarChat--info" onClick={() => HandleRoom(room, key)} >             
+                        <div className="sidebarChat--info" onClick={() => HandleRoom(room, key)} >  
+
                         <div className="roomName">{ room }</div>
 
                             {messages && messages[0].map((msg, index) => (
