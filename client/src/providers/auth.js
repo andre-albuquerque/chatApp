@@ -91,7 +91,7 @@ export const AuthProvider = ({children}) => {
             return;         
         }  
 
-        try {               
+        try {
 
             const login = await Api.post('/users/login', {
                 email: values.email,
@@ -105,8 +105,7 @@ export const AuthProvider = ({children}) => {
                 Api.defaults.headers.Authorization = `Bearer ${login.data.token}`;
                 navigate("/chat")  
             }
-       
-                                                        
+                                               
         } catch (error) {            
             console.log(error)
             if (!error.response) {

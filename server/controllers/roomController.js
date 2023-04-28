@@ -51,7 +51,6 @@ module.exports = {
             ]).then(()=>{
                 return res.status(201).json({message: 'Grupo excluído com sucesso!'});
             })
-
          
         } catch (error) {
             return res.status(500).json({erro: error})

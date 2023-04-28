@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Axios from 'axios';
 import Validate from '../components/formValidation';
 import { Box, Container, Typography, TextField, Button, Alert  } from '@mui/material';
+import API from '../api/api';
 
 import {ReactComponent as ReactLogo} from '../components/logo/logo.svg';
 
@@ -48,7 +49,7 @@ export default function SignUp() {
     }    
 
     try {              
-      await Axios.post('/users/signup', {
+      await API.post('/users/signup', {
           email: values.email,
           username: values.username,
           password: values.password,

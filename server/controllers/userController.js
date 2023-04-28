@@ -9,7 +9,7 @@ const formValidation = require('./formValidation')
 module.exports = {
     async signup (req,res,next){
         
-        validation = new formValidation(req.body.email, req.body.username, req.body.password, req.body.passwordCheck);     
+        validation = new formValidation(req.body.email, req.body.username, req.body.password, req.body.confirmPassword);     
         
         obj = validation.validation()
 
@@ -24,11 +24,11 @@ module.exports = {
             const email = await User.findOne({email: req.body.email})
             const user = await User.findOne({username: req.body.username})
             if (email) {
-                res.status(409).json({message:'Já existe uma conta cadastrada com esse email.'}); 
+                res.status(409).json({message:'Email indisponível.'}) 
                 
             }            
             else if (user) {
-                res.status(409).json({message:'Username indisponível, tente outro.'})
+                res.status(409).json({message:'Username indisponível.'})
             
             }else{
                 const newUser = new User({

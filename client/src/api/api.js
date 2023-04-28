@@ -1,15 +1,18 @@
 import axios from 'axios';
 
-let axiosConfig = {
+const axiosConfig = {
   headers: {     
     "Content-Type": "application/json",
-    'Accept': 'Token'
+    'Accept': '*/*',
+    'Access-Control-Allow-Origin': '*',
   }
 };
 
-const url = process.env.REACT_APP_BACKEND || 'api' 
+const url = process.env.REACT_APP_BACKEND// || 'api' 
+
+console.log('url', url)
 
 export default axios.create({ 
-  baseURL: url,
+  baseURL: 'http://localhost:8000',
   headers: axiosConfig.headers
 });

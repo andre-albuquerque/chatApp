@@ -1,5 +1,4 @@
-const dotenv  = require('dotenv');
-dotenv.config({ path: ".env" });
+require('dotenv').config()
 
 const express = require('express');
 const app = express();
@@ -25,7 +24,7 @@ const clienthost = process.env.CLIENT_HOST;
 
 const io = require("socket.io")(httpServer, {
     cors:{
-        origin: clienthost,
+        origin: clienthost || '*',
         credentials: true,
         methods: ["GET", "POST"],
         pingInterval: 10000,
@@ -41,7 +40,7 @@ app.use(express.static('public'));
 
 
 const corsOptions = {
-    origin: clienthost,
+    origin: clienthost || '*',
     allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'X-Access-Token', 'Authorization'],
     credentials: true,
     methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
@@ -50,7 +49,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use((req, res, next)=>{
-    res.setHeader('Access-Control-Allow-Origin', clienthost);
+    res.setHeader('Access-Control-Allow-Origin', clienthost || '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');    
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');   
     res.setHeader('Access-Control-Allow-Credentials', true);    
