@@ -51,10 +51,10 @@ export default function Signup() {
     }
 
     return (
-        <main className="h-screen flex justify-center bg-[#13678A]" >
+        <main className="h-screen flex flex-col justify-center bg-[#13678A]" >
             <div className="flex box-border self-center border rounded-lg bg-white divide-slate-900 
                             flex-col h-full w-full divide-x-0 justify-center shadow-2xl
-                            lg:flex-row lg:h-4/5 lg:w-2/3 lg:divide-x-2
+                            lg:flex-row lg:h-4/5 lg:w-2/3 lg:divide-x-2 lg:divide-slate-300
                             md:flex-col md:h-full md:w-5/6 md:divide-x-0 md:justify-center
                             ">
             <div className="self-center mb-8
@@ -64,7 +64,7 @@ export default function Signup() {
                 <h1 className="text-5xl font-bold text-center m-4 text-blue-500
                             md:text-7xl md:m-2 md:mt-8 md:mb-4"
                             >Chat App</h1>
-                </div>
+            </div>
                 <form className="self-center w-full lg:w-1/2 md:w-full" onSubmit={e => handleSubmit(e)}>
                     <div className="flex flex-col">
                     <span className="w-11/12 self-center text-center text-3xl mb-8 text-slate-950">Signup</span>
@@ -99,8 +99,9 @@ export default function Signup() {
                     <a href="/" className="text-blue-500 hover:text-[#0F4C75]"> Faça login</a>
                     </span>
                     </div>
-                </form>
+                </form>                
             </div>
+            <footer className="self-center text-center text-white text-sm mt-4">© 2023 Chat App. Desenvolvido por <a href="https://github.com/andre-albuquerque" className="text-blue-500 hover:text-[#0F4C75]">Andre Albuquerque</a></footer>
         </main>
     )
 }

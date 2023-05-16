@@ -20,6 +20,7 @@ export default function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     if (Object.values(dataInputs).some((value) => value === '')) {
       alert('Preencha todos os campos');
       return;
@@ -32,21 +33,33 @@ export default function Login() {
               },
               body: JSON.stringify(dataInputs),
         });
+    
+    const token = window.localStorage.getItem('auth');
 
-    const body = await response.json();
-
-    if (response.status === 201) {
-        router.push('/chat');
-        alert('Usuário logado com sucesso!');
+    if (token) {
+      router.push('/chat');
     }else{
-        alert('Usuário ou senha incorretos');
-    }
-  } 
 
-  return <main className="h-screen flex justify-center bg-[#13678A]">
+      const body = await response.json();
+  
+      if (body && body.token) {
+          window.localStorage.setItem('auth', body.token);
+      }
+  
+      if (response.status === 201) {
+          router.push('/chat');
+          alert('Usuário logado com sucesso!');
+      }else{
+          alert('Usuário ou senha incorretos');
+      }
+    }
+
+  }
+
+  return <main className="h-screen flex flex-col justify-center bg-[#13678A]">
     <div className="flex box-border self-center border rounded-lg bg-white divide-slate-900 
                     flex-col h-full w-full divide-x-0 justify-center shadow-2xl
-                    lg:flex-row lg:h-4/5 lg:w-2/3 lg:divide-x-2
+                    lg:flex-row lg:h-4/5 lg:w-2/3 lg:divide-x-2 lg:divide-slate-300
                     md:flex-col md:h-full md:w-5/6 md:divide-x-0 md:justify-center
                      ">
       <div className="self-center mb-8
@@ -85,5 +98,6 @@ export default function Login() {
         </form>
       </div>
     </div>
+    <footer className="self-center text-center text-white text-sm mt-4">© 2023 Chat App. Desenvolvido por <a href="https://github.com/andre-albuquerque" className="text-blue-500 hover:text-[#0F4C75]">Andre Albuquerque</a></footer>
   </main>
 }
