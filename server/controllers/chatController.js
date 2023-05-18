@@ -31,7 +31,7 @@ module.exports = {
             if (!chatMessages || (chatMessages.length === 0)) {
                 res.status(404).json({message: 'Mensagens não encontradas.'})
             }else{
-                res.status(200).json({chatMessages: chatMessages})
+                res.status(201).json({chatMessages: chatMessages})
             }         
 
         } catch (error) {

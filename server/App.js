@@ -30,7 +30,7 @@ const io = require("socket.io")(httpServer, {
         pingInterval: 10000,
         pingTimeout: 5000
     },
-    allowEIO3: true   // comment this line when local server. This option is required to get properly working on Heroku only
+    //allowEIO3: true   // comment this line when local server. This option is required to get properly working on Heroku only
 });
 
 app.use(express.json());

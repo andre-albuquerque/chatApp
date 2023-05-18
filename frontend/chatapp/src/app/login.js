@@ -1,10 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Link from "next/link"
 import { useRouter } from 'next/navigation';
+import { AuthContext } from './context/page';
 
 export default function Login() {
+
+  const { handleLogin } = useContext(AuthContext);
 
   const [dataInputs, setDataInputs] = useState({
     email: '',
@@ -16,7 +19,14 @@ export default function Login() {
       setDataInputs({ ...dataInputs, [name]: value });
   }
   
-  const router = useRouter()
+  const router = useRouter();
+
+  const token = localStorage.getItem('auth');
+
+  useEffect(() => {
+    
+    token && token.length > 0 ? router.push('/chat') : null;
+  }, [token]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -24,35 +34,9 @@ export default function Login() {
     if (Object.values(dataInputs).some((value) => value === '')) {
       alert('Preencha todos os campos');
       return;
-   }
-
-    const response = await fetch('http://localhost:8000/users/login', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(dataInputs),
-        });
-    
-    const token = window.localStorage.getItem('auth');
-
-    if (token) {
-      router.push('/chat');
-    }else{
-
-      const body = await response.json();
-  
-      if (body && body.token) {
-          window.localStorage.setItem('auth', body.token);
-      }
-  
-      if (response.status === 201) {
-          router.push('/chat');
-          alert('Usuário logado com sucesso!');
-      }else{
-          alert('Usuário ou senha incorretos');
-      }
     }
+
+    handleLogin(dataInputs);
 
   }
 

@@ -1,23 +1,26 @@
-import { useEffect, useState, useReducer } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { Users2Icon } from 'lucide-react';
+import { RoomContext  } from '../app/context/page';
 
 const Sidebar = () => {
     
     const [rooms, setRooms] = useState([]);
-    const [roomSelected, setRoomSelected] = useState('');
+    
     const [messages, setMessages] = useState([]);
-    const [roomsLoaded, setRoomsLoaded] = useState(false);
+
+    const { setRoomSelected, roomSelected } = useContext(RoomContext);
 
     useEffect(() => {
         
         let dataRooms = [];
 
         getRooms().then((data) => {
-            dataRooms = data.rooms.reverse();
-            
-            if (dataRooms.length > 0) {
-                setRooms(dataRooms);
+
+            if (data) {
+                dataRooms = data.rooms;
+                dataRooms && dataRooms.length > 0 && setRooms(dataRooms.reverse());
             }
+            
         })
     },[]);
 
@@ -42,12 +45,17 @@ const Sidebar = () => {
     },[rooms]);
 
 
+    const roomSelectedHandler = (room) => {
+        setRoomSelected(room);
+    }
+
+
     return (
         <>
         <div>
             { rooms ? rooms.map((room) => {
-                return <div key={room._id} onClick={()=>setRoomSelected(room._id)}>
-                    <div className={roomSelected === room._id ? (
+                return <div key={room._id} onClick={()=>roomSelectedHandler(room.room)}>
+                    <div className={roomSelected === room.room ? (
                                     "flex flex-row w-[100%] border-b-2 items-center \
                                     border-gray-100 p-2 hover:bg-gray-200 cursor-pointer \
                                     lg:h-16 bg-gray-200") :
@@ -99,7 +107,7 @@ const formatDate = (date) => {
 const getRooms = async () => {
     const url = "http://localhost:8000/rooms/rooms";
 
-    const auth = window.localStorage.getItem('auth');
+    const auth = localStorage.getItem('auth');
 
     const headers = {
         'Content-Type': 'application/json',
@@ -114,7 +122,7 @@ const getRooms = async () => {
 const getMessages = async (room) => {
     const url = `http://localhost:8000/chat/getRecentChat/?group=${room}`;
 
-    const auth = window.localStorage.getItem('auth');
+    const auth = localStorage.getItem('auth');
 
     const headers = {
         'Content-Type': 'application/json',
